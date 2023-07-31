@@ -33,6 +33,9 @@ namespace SP.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("BankId")
+                        .HasColumnType("int");
+
                     b.Property<string>("CVV")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -54,6 +57,8 @@ namespace SP.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("PaymentId");
+
+                    b.HasIndex("BankId");
 
                     b.HasIndex("UsersUserId");
 
@@ -155,9 +160,6 @@ namespace SP.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -169,6 +171,34 @@ namespace SP.Data.Migrations
                     b.HasKey("AdminId");
 
                     b.ToTable("Admins");
+                });
+
+            modelBuilder.Entity("SP.Entity.Models.Bank", b =>
+                {
+                    b.Property<int>("BankId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BankId"), 1L, 1);
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("CVV")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreditCardNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExpiryDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BankId");
+
+                    b.ToTable("Banks");
                 });
 
             modelBuilder.Entity("SP.Entity.MonthlyInvoice", b =>
@@ -219,9 +249,6 @@ namespace SP.Data.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("LastActivity")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -276,9 +303,17 @@ namespace SP.Data.Migrations
 
             modelBuilder.Entity("Patika.Entity.Models.Payment", b =>
                 {
+                    b.HasOne("SP.Entity.Models.Bank", "Bank")
+                        .WithMany()
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SP.Entity.User", "Users")
                         .WithMany("Payments")
                         .HasForeignKey("UsersUserId");
+
+                    b.Navigation("Bank");
 
                     b.Navigation("Users");
                 });

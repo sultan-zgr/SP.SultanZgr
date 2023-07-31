@@ -4,6 +4,7 @@ using SP.Schema.Request;
 using SP.Schema.Response.UserLog;
 using SP.Schema.Response;
 using SP.Entity;
+using SP.Entity.Models;
 
 namespace SP.Schema;
 
@@ -16,5 +17,8 @@ public class MapperConfig : Profile
 
         CreateMap<UserRequest, User>();
         CreateMap<User, UserResponse>();
+
+        CreateMap<Admin, AdminResponse>();
+        CreateMap<AdminRequest, Admin>();
     }
 }

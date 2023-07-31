@@ -54,7 +54,6 @@ public class TokenService : ITokenService
         if (user.Password.ToLower() != CreateMD5(request.Password))
         {
             user.PasswordRetryCount++;
-            user.LastActivity = DateTime.UtcNow;
 
             if (user.PasswordRetryCount > 3)
                 user.Status = 2;
@@ -81,7 +80,6 @@ public class TokenService : ITokenService
             return new ApiResponse<TokenResponse>("Password retry count exceded");
         }
 
-        user.LastActivity = DateTime.UtcNow;
         user.Status = 1;
 
 

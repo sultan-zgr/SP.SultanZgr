@@ -11,7 +11,7 @@ namespace SP.API.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
     public class AdminController : ControllerBase
     {
         private readonly IAdminService service;

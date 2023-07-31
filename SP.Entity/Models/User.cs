@@ -22,7 +22,6 @@ namespace SP.Entity
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public DateTime LastActivity { get; set; }
         public int PasswordRetryCount { get; set; }
         public int Status { get; set; }
         public ICollection<Apartment> Apartments { get; set; } // Kullanıcının birden fazla daireye sahip olması
