@@ -18,7 +18,7 @@ namespace Patika.Entity.Models
         public string CVV { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
-        public Bank Bank { get; set; } // Ödeme için kullanılan banka bilgileri
+        public int UserId { get; set; }
         public virtual User User { get; set; }
 
     }
@@ -26,11 +26,27 @@ namespace Patika.Entity.Models
     {
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
-            builder.Property(x => x.CreditCardNumber).IsRequired();
-            builder.Property(x => x.ExpiryDate).IsRequired();
-            builder.Property(x => x.CVV).IsRequired();
+            builder.HasKey(p => p.PaymentId);
+            builder.Property(p => p.CreditCardNumber).IsRequired();
+            builder.Property(p => p.ExpiryDate).IsRequired();
+            builder.Property(p => p.CVV).IsRequired();
+            builder.Property(p => p.Amount).IsRequired();
+            builder.Property(p => p.PaymentDate).IsRequired();
 
-         
+            builder.Property(p => p.Amount)
+              .HasColumnType("decimal(18, 2)")
+              .IsRequired();
+
+            builder.Property(p => p.PaymentDate).IsRequired();
+
+            // Payment ile User ilişkisi
+            builder.HasOne(p => p.User)
+                   .WithMany(u => u.Payments)
+                   .HasForeignKey(p => p.UserId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+
+
         }
     }
 

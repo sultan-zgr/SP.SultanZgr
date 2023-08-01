@@ -17,7 +17,7 @@ namespace SP.Data.GenericRepo
             _dbContext = dbContext;
         }
 
-        public async Task<List<T>> GetAllAsync()
+        public async Task<List<T>> GetAllAsync(Func<object, bool> filter)
         {
             return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
         }
@@ -64,6 +64,5 @@ namespace SP.Data.GenericRepo
             return _dbContext.Set<T>().Where(expression).AsQueryable();
         }
 
-      
     }
 }

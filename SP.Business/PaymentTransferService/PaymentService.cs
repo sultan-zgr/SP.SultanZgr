@@ -33,7 +33,7 @@ namespace SP.Business.PaymentService
                     return new ApiResponse("Record not found!");
                 }
                 await unitOfWork.DynamicRepo<T>().DeleteAsync(Id);
-                unitOfWork.SaveChanges();                               //UOW İÇERİSİNDEN DÖNEN SAVECHANGESİ KULLANIYORUM
+                await unitOfWork.SaveChangesAsync();                              //UOW İÇERİSİNDEN DÖNEN SAVECHANGESİ KULLANIYORUM
                 return new ApiResponse();
             }
             catch (Exception ex)
@@ -82,7 +82,7 @@ namespace SP.Business.PaymentService
 
                 // Ardından, T tipindeki veriyi repository üzerinden ekliyoruz.
                 await unitOfWork.DynamicRepo<T>().InsertAsync(entity);
-                unitOfWork.SaveChanges(); // Değişiklikleri kaydediyoruz.
+                await unitOfWork.SaveChangesAsync(); // Değişiklikleri kaydediyoruz.
 
                 return new ApiResponse
                 {
@@ -118,7 +118,7 @@ namespace SP.Business.PaymentService
 
                 var entity = mapper.Map<TRequest, T>(request);
                 await unitOfWork.DynamicRepo<T>().UpdateAsync(entity);
-                unitOfWork.SaveChanges();                                 //UOW İÇERİSİNDEN DÖNEN SAVECHANGESİ KULLANIYORUM
+                await unitOfWork.SaveChangesAsync();                                 //UOW İÇERİSİNDEN DÖNEN SAVECHANGESİ KULLANIYORUM
                 return new ApiResponse();
             }
             catch (Exception ex)

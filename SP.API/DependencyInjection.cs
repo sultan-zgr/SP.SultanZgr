@@ -5,6 +5,7 @@ using SP.Business.GenericService;
 using SP.Business.Token;
 using SP.Data;
 using SP.Data.UnitOfWork;
+using SP.Entity;
 using SP.Entity.Models;
 
 namespace SP.API
@@ -25,6 +26,8 @@ namespace SP.API
             services.AddScoped<IUserLogService, UserLogService>();
             services.AddScoped<IUserService, UserService>();
 
+            services.AddScoped<IApartmentService, ApartmentService>();
+            services.AddScoped<IMonthlyInvoiceService, MonthlyInvoiceService>();
 
 
 

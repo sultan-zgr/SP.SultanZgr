@@ -18,5 +18,12 @@ public class MapperConfig : Profile
         CreateMap<UserLogRequest, UserLog>();
         CreateMap<UserLog, UserLogResponse>();
 
+        CreateMap<ApartmentRequest, Apartment>();  
+        CreateMap<Apartment, ApartmentResponse>();
+
+        CreateMap<MonthlyInvoiceRequest, MonthlyInvoice>();
+        CreateMap<MonthlyInvoiceResponse, MonthlyInvoice>();
     }
+
 }
+

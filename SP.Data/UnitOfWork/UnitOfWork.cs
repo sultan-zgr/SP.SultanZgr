@@ -19,9 +19,9 @@ namespace SP.Data.UnitOfWork
             return new GenericRepository<T>(_dbContext);
         }
 
-        public void SaveChanges()
+        public async Task SaveChangesAsync()
         {
-            _dbContext.SaveChanges();
+            await Task.Run(() => _dbContext.SaveChanges());
         }
     }
 }

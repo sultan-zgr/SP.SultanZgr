@@ -14,31 +14,34 @@ namespace SP.Entity
     {
         public int ApartmentId { get; set; }
         public int UserId { get; set; }
-        public virtual User User { get; set; }
-        public bool IsOccupied { get; set; } //Oturan biri var mı
-        public bool IsOwner { get; set; } // Sahibi mi Kiracı mı
-        public string Type { get; set; }  // 2+1 3+1 vs..   
+        public bool IsOccupied { get; set; }
+        public bool IsOwner { get; set; }
+        public string Type { get; set; }
         public string BlockName { get; set; }
         public int FloorNumber { get; set; }
         public int ApartmentNumber { get; set; }
+
+        public virtual User User { get; set; }
         public virtual ICollection<MonthlyInvoice> MonthlyInvoices { get; set; }
     }
     public class ApartmentConfiguration : IEntityTypeConfiguration<Apartment>
     {
         public void Configure(EntityTypeBuilder<Apartment> builder)
         {
-            builder.Property(x => x.FloorNumber).IsRequired();
-            builder.Property(x => x.ApartmentNumber).IsRequired();
-            builder.Property(x => x.Type).HasMaxLength(50).IsRequired();
-            builder.Property(x => x.BlockName).HasMaxLength(50).IsRequired();
+            builder.HasKey(a => a.ApartmentId);
+            builder.Property(a => a.BlockName).HasMaxLength(50).IsRequired();
+            builder.Property(a => a.Type).HasMaxLength(50).IsRequired();
+            builder.Property(a => a.FloorNumber).IsRequired();
+            builder.Property(a => a.ApartmentNumber).IsRequired();
+            builder.Property(a => a.IsOccupied).IsRequired();
+            builder.Property(a => a.IsOwner).IsRequired();
 
-            // IsOccupied ilişkisi
-            builder.Property(x => x.IsOccupied).IsRequired();
+            // Apartment ile User ilişkisi
+            builder.HasOne(a => a.User)
+                   .WithMany(u => u.Apartments)
+                   .HasForeignKey(a => a.UserId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
-            // IsOwner ilişkisi
-            builder.Property(x => x.IsOwner).IsRequired();
-
-            
 
         }
     }

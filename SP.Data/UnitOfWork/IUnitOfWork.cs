@@ -6,7 +6,7 @@ namespace SP.Data;
 public interface IUnitOfWork
 {
 
-    void SaveChanges();
+    Task SaveChangesAsync();
     IGenericRepository<T> DynamicRepo<T>() where T :  class;
 
 }

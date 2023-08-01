@@ -166,9 +166,6 @@ namespace SP.Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("BankId")
-                        .HasColumnType("int");
-
                     b.Property<string>("CVV")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -187,8 +184,6 @@ namespace SP.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("PaymentId");
-
-                    b.HasIndex("BankId");
 
                     b.HasIndex("UserId");
 
@@ -315,6 +310,10 @@ namespace SP.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -383,6 +382,14 @@ namespace SP.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TCNo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -404,7 +411,7 @@ namespace SP.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MonthlyInvoiceId"), 1L, 1);
 
-                    b.Property<int?>("ApartmentId")
+                    b.Property<int>("ApartmentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Date")
@@ -419,17 +426,12 @@ namespace SP.Data.Migrations
                     b.Property<decimal>("GasBill")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("WaterBill")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("MonthlyInvoiceId");
 
                     b.HasIndex("ApartmentId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("MonthlyInvoices");
                 });
@@ -511,19 +513,11 @@ namespace SP.Data.Migrations
 
             modelBuilder.Entity("Patika.Entity.Models.Payment", b =>
                 {
-                    b.HasOne("SP.Entity.Models.Bank", "Bank")
-                        .WithMany()
-                        .HasForeignKey("BankId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SP.Entity.Models.User", "User")
                         .WithMany("Payments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Bank");
 
                     b.Navigation("User");
                 });
@@ -541,17 +535,13 @@ namespace SP.Data.Migrations
 
             modelBuilder.Entity("SP.Entity.MonthlyInvoice", b =>
                 {
-                    b.HasOne("SP.Entity.Apartment", null)
+                    b.HasOne("SP.Entity.Apartment", "Apartment")
                         .WithMany("MonthlyInvoices")
-                        .HasForeignKey("ApartmentId");
-
-                    b.HasOne("SP.Entity.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("ApartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Apartment");
                 });
 
             modelBuilder.Entity("SP.Entity.Apartment", b =>

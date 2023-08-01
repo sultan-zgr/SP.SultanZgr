@@ -2,6 +2,7 @@
 using Serilog;
 using SP.Base.BaseResponse;
 using SP.Data;
+using SP.Entity.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,9 +55,11 @@ namespace SP.Business.GenericService
             try
             {
                 var entity = mapper.Map<TRequest, T>(request);
-                //entity.UserName = "sim@admin.com";
-                //entity.Password = "1";
-
+                if (entity is AppUser appUserEntity)
+                {
+                    appUserEntity.UserName = "sultan@admin.com";
+                    appUserEntity.Password = "12345";
+                }
                 await unitOfWork.DynamicRepo<T>().InsertAsync(entity);
 
                 return new ApiResponse();
@@ -67,6 +70,7 @@ namespace SP.Business.GenericService
                 return new ApiResponse(ex.Message);
             }
         }
+
 
 
         public async Task<ApiResponse> Update(int Id, TRequest request)
@@ -81,7 +85,7 @@ namespace SP.Business.GenericService
 
                 var entity = mapper.Map<TRequest, T>(request);
                 await unitOfWork.DynamicRepo<T>().UpdateAsync(entity);
-                unitOfWork.SaveChanges();                                 //UOW İÇERİSİNDEN DÖNEN SAVECHANGESİ KULLANIYORUM
+                await unitOfWork.SaveChangesAsync();                                //UOW İÇERİSİNDEN DÖNEN SAVECHANGESİ KULLANIYORUM
                 return new ApiResponse();
             }
             catch (Exception ex)
@@ -101,7 +105,7 @@ namespace SP.Business.GenericService
                     return new ApiResponse("Record not found!");
                 }
                 await unitOfWork.DynamicRepo<T>().DeleteAsync(Id);
-                unitOfWork.SaveChanges();                               //UOW İÇERİSİNDEN DÖNEN SAVECHANGESİ KULLANIYORUM
+                await unitOfWork.SaveChangesAsync();                             //UOW İÇERİSİNDEN DÖNEN SAVECHANGESİ KULLANIYORUM
                 return new ApiResponse();
             }
             catch (Exception ex)
@@ -111,5 +115,6 @@ namespace SP.Business.GenericService
             }
         }
 
+        
     }
 }
