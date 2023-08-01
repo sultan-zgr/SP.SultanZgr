@@ -12,14 +12,15 @@ using System.Threading.Tasks;
 
 namespace SP.Data;
 
-public class SPDbContext : DbContext
+public class SPDbContext : IdentityDbContext<AppUser>
 {
     public SPDbContext(DbContextOptions options) : base(options)
     {
     }
 
     public DbSet<Admin> Admins { get; set; }
-    public DbSet<User> Users { get; set; }
+    public DbSet<User> Users { get;set; }
+    public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<UserLog> UserLogs { get; set; }
     public DbSet<MonthlyInvoice> MonthlyInvoices { get; set; }
     public DbSet<Apartment> Apartments { get; set; }

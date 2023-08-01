@@ -3,6 +3,7 @@ using SP.Business.Abstract;
 using SP.Business.GenericService;
 using SP.Data;
 using SP.Entity;
+using SP.Entity.Models;
 using SP.Schema.Request;
 using SP.Schema.Response;
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SP.Base.BaseResponse;
 using SP.Business.Abstract;
+using SP.Entity.Models;
 using SP.Schema.Request;
 using SP.Schema.Response;
 using System.Data;
@@ -21,15 +22,15 @@ namespace SP.API.Controller
             this.service = service;
         }
         [HttpGet]
-        public Task<ApiResponse<List<AdminResponse>>> GetAll()
+        public async Task<ApiResponse<List<AdminResponse>>> GetAll()
         {
-            var response = service.GetAll();
+            var response = await service.GetAll();
             return response;
         }
         [HttpGet("{id}")]
         public Task<ApiResponse<AdminResponse>> GeyById(int id)  //initial yapabilirim belki dur şimdilik
         {
-            var response = service.GetById(id);
+            var response = service.GetById(id, "Apartments");
             return response;
         }
 

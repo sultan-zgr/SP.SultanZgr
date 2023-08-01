@@ -18,9 +18,8 @@ namespace Patika.Entity.Models
         public string CVV { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
-        public int UserId { get; set; }
-        public User Users { get; set; } //Ödemeyi yapan 
         public Bank Bank { get; set; } // Ödeme için kullanılan banka bilgileri
+        public virtual User User { get; set; }
 
     }
     public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
@@ -31,10 +30,7 @@ namespace Patika.Entity.Models
             builder.Property(x => x.ExpiryDate).IsRequired();
             builder.Property(x => x.CVV).IsRequired();
 
-            builder.HasOne(x => x.Users)
-                   .WithMany(x => x.Payments)
-                   .HasForeignKey(x => x.UserId)
-                   .IsRequired(true);
+         
         }
     }
 

@@ -12,13 +12,11 @@ public class MapperConfig : Profile
 {
     public MapperConfig()
     {
+        CreateMap<Admin, AdminRequest>();
+        CreateMap<Admin, AdminResponse>();
+
         CreateMap<UserLogRequest, UserLog>();
         CreateMap<UserLog, UserLogResponse>();
 
-        CreateMap<UserRequest, User>();
-        CreateMap<User, UserResponse>();
-
-        CreateMap<Admin, AdminResponse>();
-        CreateMap<AdminRequest, Admin>();
     }
 }

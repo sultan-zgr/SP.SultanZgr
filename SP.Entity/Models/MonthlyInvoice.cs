@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SP.Entity.Models;
 
 namespace SP.Entity
 {
@@ -17,8 +18,8 @@ namespace SP.Entity
         public decimal ElectricityBill { get; set; }
         public decimal GasBill { get; set; }
         public DateTime Date { get; set; }
-        public int UserId { get; set; }
-        public User Users { get; set; }
+        public virtual User User { get; set; }
+
 
     }
     public class MonthlyInvoiceConfiguration : IEntityTypeConfiguration<MonthlyInvoice>
@@ -27,11 +28,7 @@ namespace SP.Entity
         {
             builder.Property(x => x.Date).IsRequired();
 
-            builder.HasOne(x => x.Users)
-                   .WithMany(x => x.MonthlyInvoices)
-                   .HasForeignKey(x => x.UserId)
-                   .IsRequired(true);
-
+          
         }
     }
 }

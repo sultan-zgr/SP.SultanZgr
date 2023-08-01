@@ -5,6 +5,7 @@ using SP.Business.Abstract;
 using SP.Business.GenericService;
 using SP.Data;
 using SP.Entity;
+using SP.Entity.Models;
 using SP.Schema.Request.UserLog;
 using SP.Schema.Response.UserLog;
 
@@ -24,7 +25,7 @@ public class UserLogService : GenericService<UserLog, UserLogRequest, UserLogRes
 
     public ApiResponse<List<UserLogResponse>> GetByUserSession(string username)
     {
-        var list = unitOfWork.DynamicRepo<User>().Where(x => x.UserName == username).ToList();  // !!!
+        var list = unitOfWork.DynamicRepo<AppUser>().Where(x => x.UserName == username).ToList();  // !!!
 
         var mapped = mapper.Map<List<UserLogResponse>>(list);
         return new ApiResponse<List<UserLogResponse>>(mapped);

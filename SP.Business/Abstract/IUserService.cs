@@ -1,5 +1,6 @@
 ﻿using SP.Business.GenericService;
 using SP.Entity;
+using SP.Entity.Models;
 using SP.Schema.Request;
 using SP.Schema.Response;
 

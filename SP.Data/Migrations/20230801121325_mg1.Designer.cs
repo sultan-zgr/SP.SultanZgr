@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SP.Data;
 
@@ -11,9 +12,10 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    partial class SPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230801121325_mg1")]
+    partial class mg1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,15 +263,13 @@ namespace SP.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminId"), 1L, 1);
 
-                    b.Property<string>("Password")
+                    b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("AdminId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Admins");
                 });
@@ -532,6 +532,17 @@ namespace SP.Data.Migrations
                 {
                     b.HasOne("SP.Entity.Models.User", "User")
                         .WithMany("Apartments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SP.Entity.Models.Admin", b =>
+                {
+                    b.HasOne("SP.Entity.Models.AppUser", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

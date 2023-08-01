@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SP.Schema.Request
+namespace SP.Entity.Models
 {
     public class AdminRequest
     {
         public string UserName { get; set; }
         public string Password { get; set; }
-
     }
 }

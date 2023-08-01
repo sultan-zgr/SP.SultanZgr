@@ -6,20 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
+using SP.Entity.Models;
 
 namespace SP.Entity
 {
     public class Apartment
     {
-        [Key]
         public int ApartmentId { get; set; }
+        public int UserId { get; set; }
+        public virtual User User { get; set; }
         public bool IsOccupied { get; set; } //Oturan biri var mı
         public bool IsOwner { get; set; } // Sahibi mi Kiracı mı
         public string Type { get; set; }  // 2+1 3+1 vs..   
         public string BlockName { get; set; }
         public int FloorNumber { get; set; }
         public int ApartmentNumber { get; set; }
-        public User Users { get; set; }
+        public virtual ICollection<MonthlyInvoice> MonthlyInvoices { get; set; }
     }
     public class ApartmentConfiguration : IEntityTypeConfiguration<Apartment>
     {
@@ -36,12 +38,7 @@ namespace SP.Entity
             // IsOwner ilişkisi
             builder.Property(x => x.IsOwner).IsRequired();
 
-            builder.HasOne(x => x.Users)
-                   .WithMany(x => x.Apartments)
-                   .HasForeignKey(x => x.Users)
-                   .IsRequired(true);
-
-
+            
 
         }
     }

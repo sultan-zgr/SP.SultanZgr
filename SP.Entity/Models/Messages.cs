@@ -14,10 +14,7 @@ namespace SP.Entity
         public int MessagesId { get; set; }
         public string Content { get; set; }
         public bool IsRead { get; set; }
-        public int AdminId { get; set; }
-        public virtual Admin Admin { get; set; }
-        public int UserId { get; set; }
-        public virtual User User { get; set; }
+       
 
     }
     public class MessagesConfiguration : IEntityTypeConfiguration<Messages>
@@ -28,15 +25,7 @@ namespace SP.Entity
 
             builder.Property(x => x.IsRead).IsRequired();
 
-            builder.HasOne(x => x.Admin)                                     // Mesaj okuyan admin/yönetici
-                   .WithMany(x => x.ReceivedMessages)
-                   .HasForeignKey(x => x.AdminId)
-                   .IsRequired(true);
-
-            builder.HasOne(x => x.User)                                     // Mesaj göndern user
-                   .WithMany(x => x.SentMessages)
-                   .HasForeignKey(x => x.UserId)
-                   .IsRequired(true);
+           
 
 
             // Diğer ilişkiler ve yapılandırmalar burada olabilir
