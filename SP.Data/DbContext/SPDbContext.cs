@@ -5,6 +5,7 @@ using SP.Entity;
 using SP.Entity.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -12,17 +13,17 @@ using System.Threading.Tasks;
 
 namespace SP.Data;
 
-public class SPDbContext : IdentityDbContext<AppUser>
+public class SPDbContext : IdentityDbContext
 {
     public SPDbContext(DbContextOptions options) : base(options)
     {
     }
 
-    public DbSet<Admin> Admins { get; set; }
-    public DbSet<User> Users { get;set; }
-    public DbSet<AppUser> AppUsers { get; set; }
+
+    public DbSet<User> Users { get; set; }
     public DbSet<UserLog> UserLogs { get; set; }
     public DbSet<MonthlyInvoice> MonthlyInvoices { get; set; }
+
     public DbSet<Apartment> Apartments { get; set; }
     public DbSet<Messages> Messages { get; set; }
     public DbSet<Payment> Payments { get; set; }
@@ -54,7 +55,19 @@ public class SPDbContext : IdentityDbContext<AppUser>
        .ToList();
 
 
+        modelBuilder.Entity<Payment>().Property(p => p.Amount).HasColumnType("decimal(18,2)");
+        modelBuilder.Entity<Bank>().Property(b => b.Amount).HasColumnType("decimal(18,2)");
+        modelBuilder.Entity<MonthlyInvoice>().Property(mi => mi.DuesAmount).HasColumnType("decimal(18,2)");
+        modelBuilder.Entity<MonthlyInvoice>().Property(mi => mi.ElectricityBill).HasColumnType("decimal(18,2)");
+        modelBuilder.Entity<MonthlyInvoice>().Property(mi => mi.GasBill).HasColumnType("decimal(18,2)");
+        modelBuilder.Entity<MonthlyInvoice>().Property(mi => mi.WaterBill).HasColumnType("decimal(18,2)");
 
+
+        modelBuilder.Entity<Payment>()
+            .HasOne(p => p.MonthlyInvoice)
+            .WithMany(mi => mi.Payments)
+            .HasForeignKey(p => p.MonthlyInvoiceId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         //modelBuilder.ApplyConfiguration(new AdminConfiguration());
 

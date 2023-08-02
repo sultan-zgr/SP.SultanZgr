@@ -12,17 +12,20 @@ public class MapperConfig : Profile
 {
     public MapperConfig()
     {
-        CreateMap<Admin, AdminRequest>();
-        CreateMap<Admin, AdminResponse>();
-
         CreateMap<UserLogRequest, UserLog>();
         CreateMap<UserLog, UserLogResponse>();
-
-        CreateMap<ApartmentRequest, Apartment>();  
+        CreateMap<ApartmentRequest, Apartment>();
         CreateMap<Apartment, ApartmentResponse>();
 
-        CreateMap<MonthlyInvoiceRequest, MonthlyInvoice>();
-        CreateMap<MonthlyInvoiceResponse, MonthlyInvoice>();
+        CreateMap<MonthlyInvoiceRequest, MonthlyInvoice>()
+            .ForMember(dest => dest.Apartment, opt => opt.MapFrom(src => src.Apartment));
+
+        CreateMap<MonthlyInvoice, MonthlyInvoiceResponse>()
+            .ForMember(dest => dest.Apartment, opt => opt.MapFrom(src => src.Apartment));
+
+
+
+
     }
 
 }

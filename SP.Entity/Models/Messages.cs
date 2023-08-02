@@ -6,30 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SP.Entity.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SP.Entity
 {
     public class Messages
     {
-        public int MessagesId { get; set; }
+        public int Id { get; set; }
         public string Content { get; set; }
         public bool IsRead { get; set; }
-       
-
+        public int ApartmentId { get; set; } // Change this to ApartmentId
+        [ForeignKey("SenderId")]
+        public User Sender { get; set; }
     }
-    public class MessagesConfiguration : IEntityTypeConfiguration<Messages>
-    {
-        public void Configure(EntityTypeBuilder<Messages> builder)
-        {
-            builder.Property(x => x.Content).IsRequired();
 
-            builder.Property(x => x.IsRead).IsRequired();
-
-           
-
-
-            // Diğer ilişkiler ve yapılandırmalar burada olabilir
-        }
-    }
 
 }
+

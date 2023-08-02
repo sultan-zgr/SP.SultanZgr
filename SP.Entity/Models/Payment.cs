@@ -7,47 +7,37 @@ using System.Text;
 using System.Threading.Tasks;
 using SP.Entity;
 using SP.Entity.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Patika.Entity.Models
 {
     public class Payment
     {
-        public int PaymentId { get; set; }
-        public string CreditCardNumber { get; set; }
-        public DateTime ExpiryDate { get; set; }
-        public string CVV { get; set; }
-        public decimal Amount { get; set; }
-        public DateTime PaymentDate { get; set; }
-        public int UserId { get; set; }
-        public virtual User User { get; set; }
+        public int Id { get; set; } // Ödeme işlemi için ID veya benzersiz kimlik alanı
+        public DateTime PaymentDate { get; set; } // Ödeme tarihi
+        public decimal Amount { get; set; } // Ödeme miktarı
+        public string UserId { get; set; } // Ödeme yapan kullanıcının ID'si
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; } // Kullanıcı ile ilişki için dış anahtar
 
-    }
-    public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
-    {
-        public void Configure(EntityTypeBuilder<Payment> builder)
+        public int MonthlyInvoiceId { get; set; }
+
+        [ForeignKey("MonthlyInvoiceId")]
+        public virtual MonthlyInvoice MonthlyInvoice { get; set; }
+
+        public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         {
-            builder.HasKey(p => p.PaymentId);
-            builder.Property(p => p.CreditCardNumber).IsRequired();
-            builder.Property(p => p.ExpiryDate).IsRequired();
-            builder.Property(p => p.CVV).IsRequired();
-            builder.Property(p => p.Amount).IsRequired();
-            builder.Property(p => p.PaymentDate).IsRequired();
-
-            builder.Property(p => p.Amount)
-              .HasColumnType("decimal(18, 2)")
-              .IsRequired();
-
-            builder.Property(p => p.PaymentDate).IsRequired();
-
-            // Payment ile User ilişkisi
-            builder.HasOne(p => p.User)
-                   .WithMany(u => u.Payments)
-                   .HasForeignKey(p => p.UserId)
-                   .OnDelete(DeleteBehavior.Cascade);
-
-
-
+            public void Configure(EntityTypeBuilder<Payment> builder)
+            {
+                // ...
+                builder.HasOne(p => p.MonthlyInvoice)
+                    .WithMany(mi => mi.Payments)
+                    .HasForeignKey(p => p.MonthlyInvoiceId)
+                    .OnDelete(DeleteBehavior.Restrict);
+                // ...
+            }
         }
-    }
 
+    }
 }
+

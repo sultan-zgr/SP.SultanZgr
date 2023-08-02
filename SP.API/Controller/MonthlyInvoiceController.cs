@@ -32,7 +32,7 @@ namespace SP.API.Controller
         //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<ApiResponse<MonthlyInvoiceResponse>>> GetMonthlyInvoiceById(int id)
         {
-            var response = await _monthlyInvoiceService.GetById(id);
+            var response = await _monthlyInvoiceService.GetById(id, "Apartments");
             if (!response.Success)
                 return NotFound(response);
 
@@ -63,21 +63,6 @@ namespace SP.API.Controller
             return response;
         }
     
-        [HttpGet("monthlyinvoices")]
-        //[Authorize(Roles = "User")]
-        public async Task<ActionResult<ApiResponse<List<MonthlyInvoiceResponse>>>> GetUserMonthlyInvoices()
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                // Eğer kimlik doğrulama yapılmamışsa, hata yanıtı döndürün veya giriş sayfasına yönlendirin
-                return Unauthorized();
-            }
-            // Get the authenticated user's ID
-            int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-
-            var response = await _monthlyInvoiceService.GetUserMonthlyInvoices(userId);
-            return Ok(response);
-        }
     }
 }
 

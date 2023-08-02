@@ -100,7 +100,12 @@ namespace SP.Business.PaymentService
             }
         }
 
-        public Task<ApiResponse> ProcessPayment(int userId, string creditCardNumber, DateTime expiryDate, string cvv, decimal amount)
+        public Task<ApiResponse> MakePayment(string userId, decimal amount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResponse> ProcessPayment(int apartmentId, string creditCardNumber, DateTime expiryDate, string cvv, decimal amount)
         {
             throw new NotImplementedException();
         }

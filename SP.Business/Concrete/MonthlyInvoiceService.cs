@@ -26,7 +26,7 @@ namespace SP.Business.Concrete
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
-        public async Task<ApiResponse<List<MonthlyInvoiceResponse>>> GetUserMonthlyInvoices(int userId)
+        public async Task<ApiResponse<List<MonthlyInvoiceResponse>>> GetUserMonthlyInvoices(int apartmentId)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace SP.Business.Concrete
                     .GetAllWithIncludeAsync(includes: "Apartment"); // Include "User" relation to get user information in the response
 
                 var invoices = await invoicesTask;
-                var filteredInvoices = invoices.Where(m => m.Apartment.ApartmentId == userId).ToList(); // Filter invoices by UserId
+                var filteredInvoices = invoices.Where(m => m.Apartment.Id == apartmentId).ToList(); // Filter invoices by UserId
 
                 var response = _mapper.Map<List<MonthlyInvoice>, List<MonthlyInvoiceResponse>>(filteredInvoices);
                 return new ApiResponse<List<MonthlyInvoiceResponse>>(response);

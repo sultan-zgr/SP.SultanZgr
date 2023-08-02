@@ -34,7 +34,7 @@ namespace SP.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SP.API", Version = "v1" });
             });
 
-            services.AddIdentity<AppUser, IdentityRole>(options =>
+            services.AddIdentity<User, IdentityRole>(options =>
             {
                 // Kullanıcı şifre ayarları
                 options.Password.RequireDigit = true;
@@ -64,7 +64,7 @@ namespace SP.API
             JwtConfig = Configuration.GetSection("JwtConfig").Get<JwtConfig>();
             services.AddSingleton(JwtConfig);
 
-            services.AddScoped<ITokenService, TokenService>();
+            //services.AddScoped<ITokenService, TokenService>();
 
             services.AddAuthentication(options =>
             {

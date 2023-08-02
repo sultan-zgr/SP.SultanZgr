@@ -20,9 +20,9 @@ namespace SP.API.Controller
     public class AppUserController : ControllerBase
     {
         private readonly ITokenService _tokenService;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly UserManager<User> _userManager;
 
-        public AppUserController(ITokenService tokenService, UserManager<AppUser> userManager)
+        public AppUserController(ITokenService tokenService, UserManager<User> userManager)
         {
             _tokenService = tokenService;
             _userManager = userManager;

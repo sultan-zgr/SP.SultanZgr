@@ -13,6 +13,6 @@ namespace SP.Business.Abstract
 {
     public interface IMonthlyInvoiceService : IGenericService<MonthlyInvoice, MonthlyInvoiceRequest, MonthlyInvoiceResponse>
     {
-        Task<ApiResponse<List<MonthlyInvoiceResponse>>> GetUserMonthlyInvoices(int userId);
+    
     }
 }

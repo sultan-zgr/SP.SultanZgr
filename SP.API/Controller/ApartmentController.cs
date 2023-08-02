@@ -22,7 +22,7 @@ namespace SP.API.Controller
         //[Authorize(Roles = "Admin")]
         public async Task<ApiResponse<List<ApartmentResponse>>> GetAllApartments()
         {
-            var response = await _service.GetAll("Apartments"); 
+            var response = await _service.GetAll("Apartment"); 
             return response;
         }
 
@@ -30,7 +30,7 @@ namespace SP.API.Controller
         //[Authorize(Roles = "Admin")]
         public async Task<ApiResponse<ApartmentResponse>> GetApartmentById(int id)
         {
-            var response = await _service.GetById(id, "Apartments"); 
+            var response = await _service.GetById(id); 
             return response;
         }
 

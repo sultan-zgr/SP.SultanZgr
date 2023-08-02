@@ -55,7 +55,7 @@ namespace SP.Business.GenericService
             try
             {
                 var entity = mapper.Map<TRequest, T>(request);
-                if (entity is AppUser appUserEntity)
+                if (entity is User appUserEntity)
                 {
                     appUserEntity.UserName = "sultan@admin.com";
                     appUserEntity.Password = "12345";

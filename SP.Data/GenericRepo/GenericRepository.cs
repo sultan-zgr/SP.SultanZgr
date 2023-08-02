@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SP.Entity.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,5 +65,6 @@ namespace SP.Data.GenericRepo
             return _dbContext.Set<T>().Where(expression).AsQueryable();
         }
 
+       
     }
 }

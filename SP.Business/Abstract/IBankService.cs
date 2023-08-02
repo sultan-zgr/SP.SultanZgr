@@ -1,4 +1,5 @@
 ﻿using Patika.Entity.Models;
+using SP.Base.BaseResponse;
 using SP.Business.PaymentService;
 using SP.Entity.Models;
 using SP.Schema.Request;
@@ -13,6 +14,8 @@ namespace SP.Business.Abstract
 {
     public interface IBankService : IPaymentService<Bank, BankRequest, BankResponse> 
     {
+        Task<Bank> GetBankByUserId(string userId);
+        Task<ApiResponse> UpdateBankInfo(BankRequest request); 
 
     }
 }

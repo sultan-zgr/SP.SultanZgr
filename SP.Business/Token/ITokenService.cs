@@ -16,41 +16,42 @@ using System.Text;
 namespace SP.Business.Token;
 public interface ITokenService
 {
-    Task<string> GenerateTokenAsync(AppUser user, string role);
+    Task<string> GenerateTokenAsync(User user, string role);
 }
 
-public class TokenService : ITokenService
-{
-    private readonly UserManager<AppUser> _userManager;
-    private readonly IConfiguration _configuration;
+//public class TokenService : ITokenService
+//{
+//    private readonly UserManager<User> _userManager;
+//    private readonly IConfiguration _configuration;
 
-    public TokenService(UserManager<AppUser> userManager, IConfiguration configuration)
-    {
-        _userManager = userManager;
-        _configuration = configuration;
-    }
+//    public TokenService(UserManager<User> userManager, IConfiguration configuration)
+//    {
+//        _userManager = userManager;
+//        _configuration = configuration;
+//    }
+//}
 
-    public async Task<string> GenerateTokenAsync(AppUser user, string role)
-    {
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, role)
-        };
+//    public async Task<string> GenerateTokenAsync(User user, string role)
+//    {
+//        var claims = new List<Claim>
+//        //{
+//        //    new Claim(ClaimTypes.NameIdentifier, user.Id),
+//        //    new Claim(ClaimTypes.Name, user.UserName),
+//        //    new Claim(ClaimTypes.Email, user.Email),
+//        //    new Claim(ClaimTypes.Role, role)
+//        };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtConfig:SecretKey"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+//        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtConfig:SecretKey"]));
+//        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-        var token = new JwtSecurityToken(
-            _configuration["JwtConfig:Issuer"],
-            _configuration["JwtConfig:Audience"],
-            claims,
-            expires: DateTime.Now.AddDays(1),
-            signingCredentials: creds
-        );
+//        var token = new JwtSecurityToken(
+//            _configuration["JwtConfig:Issuer"],
+//            _configuration["JwtConfig:Audience"],
+//            claims,
+//            expires: DateTime.Now.AddDays(1),
+//            signingCredentials: creds
+//        );
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-}
+//        return new JwtSecurityTokenHandler().WriteToken(token);
+//    }
+//}

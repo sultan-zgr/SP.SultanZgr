@@ -17,7 +17,8 @@ namespace SP.Business.PaymentService
         Task<ApiResponse> Insert(TRequest request);
         Task<ApiResponse> Update(int Id, TRequest request);
         Task<ApiResponse> Delete(int Id);
-        Task<ApiResponse> ProcessPayment(int userId, string creditCardNumber, DateTime expiryDate, string cvv, decimal amount);
+        // Ödeme işlemi
+        Task<ApiResponse> MakePayment(string userId, decimal amount);
 
     }
 

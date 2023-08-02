@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SP.Entity.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -17,5 +18,6 @@ namespace SP.Data.GenericRepo
         Task UpdateAsync(T t);
         Task DeleteAsync(int id);
         IEnumerable<T> Where(Expression<Func<T, bool>> expression);
+       
     }
 }

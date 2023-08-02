@@ -8,8 +8,8 @@ using SP.Schema.Response;
 
 namespace SP.Business.Abstract
 {
-    public interface IAdminService : IGenericService<Admin, AdminRequest, AdminResponse>
-    {
+    //public interface IAdminService : IGenericService<Admin, AdminRequest, AdminResponse>
+    //{
        
-    }
+    //}
 }

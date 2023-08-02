@@ -25,7 +25,7 @@ public class UserLogService : GenericService<UserLog, UserLogRequest, UserLogRes
 
     public ApiResponse<List<UserLogResponse>> GetByUserSession(string username)
     {
-        var list = unitOfWork.DynamicRepo<AppUser>().Where(x => x.UserName == username).ToList();  // !!!
+        var list = unitOfWork.DynamicRepo<User>().Where(x => x.UserName == username).ToList();  // !!!
 
         var mapped = mapper.Map<List<UserLogResponse>>(list);
         return new ApiResponse<List<UserLogResponse>>(mapped);

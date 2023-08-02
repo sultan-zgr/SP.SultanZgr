@@ -13,6 +13,6 @@ namespace SP.Schema.Request
         public decimal ElectricityBill { get; set; }
         public decimal GasBill { get; set; }
         public DateTime Date { get; set; }
-        public int UserId { get; set; } 
+        public ApartmentRequest Apartment { get; set; } 
     }
 }

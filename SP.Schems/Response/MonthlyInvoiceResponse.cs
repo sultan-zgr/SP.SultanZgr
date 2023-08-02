@@ -14,6 +14,6 @@ namespace SP.Schema.Response
         public decimal ElectricityBill { get; set; }
         public decimal GasBill { get; set; }
         public DateTime Date { get; set; }
-        public int UserId { get; set; } // MonthlyInvoice'a bağlı User'ın Id'si
+        public ApartmentResponse Apartment { get; set; }
     }
 }
