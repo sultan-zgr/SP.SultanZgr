@@ -8,6 +8,7 @@ using SP.Schema.Response;
 
 namespace SP.API.Controller
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class ApartmentController : ControllerBase
@@ -39,7 +40,8 @@ namespace SP.API.Controller
         public async Task<ApiResponse> AddApartment([FromBody] ApartmentRequest request)
         {
             var response = await _service.Insert(request);
-             return response;
+             
+            return response;
         }
 
         [HttpPut("{id}")]

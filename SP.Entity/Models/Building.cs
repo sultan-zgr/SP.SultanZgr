@@ -10,7 +10,7 @@ namespace SP.Entity.Models
 {
     public class Building
     {
-        public int Id { get; set; }
+        public int BuildingId { get; set; }
         public string BuildingName { get; set; }
         public string BlockNumber { get; set; }
         public List<Apartment> Apartments { get; set; } = new List<Apartment>();

@@ -16,13 +16,13 @@ namespace Patika.Entity.Models
         public int Id { get; set; } // Ödeme işlemi için ID veya benzersiz kimlik alanı
         public DateTime PaymentDate { get; set; } // Ödeme tarihi
         public decimal Amount { get; set; } // Ödeme miktarı
-        public string UserId { get; set; } // Ödeme yapan kullanıcının ID'si
-        [ForeignKey("UserId")]
+        public int UserId { get; set; } // Ödeme yapan kullanıcının ID'si
+      
         public virtual User User { get; set; } // Kullanıcı ile ilişki için dış anahtar
 
         public int MonthlyInvoiceId { get; set; }
 
-        [ForeignKey("MonthlyInvoiceId")]
+ 
         public virtual MonthlyInvoice MonthlyInvoice { get; set; }
 
         public class PaymentConfiguration : IEntityTypeConfiguration<Payment>

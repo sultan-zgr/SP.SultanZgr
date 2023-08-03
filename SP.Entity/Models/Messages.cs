@@ -15,8 +15,7 @@ namespace SP.Entity
         public int Id { get; set; }
         public string Content { get; set; }
         public bool IsRead { get; set; }
-        public int ApartmentId { get; set; } // Change this to ApartmentId
-        [ForeignKey("SenderId")]
+        public int ApartmentId { get; set; } // Change this to ApartmentI
         public User Sender { get; set; }
     }
 

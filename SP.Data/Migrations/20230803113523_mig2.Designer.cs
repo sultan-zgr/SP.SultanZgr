@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SP.Data;
 
@@ -11,9 +12,10 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    partial class SPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230803113523_mig2")]
+    partial class mig2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,6 +177,7 @@ namespace SP.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TCNo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -182,6 +185,7 @@ namespace SP.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VehiclePlateNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
@@ -267,13 +271,11 @@ namespace SP.Data.Migrations
 
             modelBuilder.Entity("SP.Entity.Apartment", b =>
                 {
-                    b.HasOne("SP.Entity.Models.User", "User")
+                    b.HasOne("SP.Entity.Models.User", null)
                         .WithMany("Apartments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SP.Entity.Messages", b =>

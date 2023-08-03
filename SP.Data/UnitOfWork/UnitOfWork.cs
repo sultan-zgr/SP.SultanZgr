@@ -1,5 +1,6 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
 using SP.Data;
 using SP.Data.GenericRepo;
 
@@ -21,7 +22,7 @@ namespace SP.Data.UnitOfWork
 
         public async Task SaveChangesAsync()
         {
-            await Task.Run(() => _dbContext.SaveChanges());
+             _dbContext.SaveChanges();
         }
     }
 }

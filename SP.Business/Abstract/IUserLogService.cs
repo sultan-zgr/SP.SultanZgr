@@ -1,12 +1,16 @@
-﻿using SP.Base.BaseResponse;
-using SP.Business.GenericService;
-using SP.Entity;
-using SP.Schema.Request.UserLog;
-using SP.Schema.Response.UserLog;
+﻿using SP.Business.GenericService;
+using SP.Entity.Models;
+using SP.Schema.Request;
+using SP.Schema.Response;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace SP.Business.Abstract;
-
-public interface IUserLogService : IGenericService<UserLog, UserLogRequest, UserLogResponse>
+namespace SP.Business.Abstract
 {
-    ApiResponse<List<UserLogResponse>> GetByUserSession(string username);
+    public interface IUserLogService : IGenericService<User, UserLogRequest, UserLogResponse>
+    {
+    }
 }

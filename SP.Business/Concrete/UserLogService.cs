@@ -1,33 +1,28 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using SP.Base.BaseResponse;
 using SP.Business.Abstract;
 using SP.Business.GenericService;
 using SP.Data;
-using SP.Entity;
 using SP.Entity.Models;
-using SP.Schema.Request.UserLog;
-using SP.Schema.Response.UserLog;
+using SP.Schema.Request;
+using SP.Schema.Response;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace SP.Business.Concrete;
-
-public class UserLogService : GenericService<UserLog, UserLogRequest, UserLogResponse>, IUserLogService
+namespace SP.Business.Concrete
 {
-
-    private readonly IMapper mapper;
-    private readonly IUnitOfWork unitOfWork;
-
-    public UserLogService(IMapper mapper, IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+    public class UserLogService : GenericService<UserLog, UserLogRequest, UserLogResponse>, IUserLogService
     {
-        this.mapper = mapper;
-        this.unitOfWork = unitOfWork;
-    }
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-    public ApiResponse<List<UserLogResponse>> GetByUserSession(string username)
-    {
-        var list = unitOfWork.DynamicRepo<User>().Where(x => x.UserName == username).ToList();  // !!!
+        public UserLogService(IMapper mapper, IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+        {
+        }
 
-        var mapped = mapper.Map<List<UserLogResponse>>(list);
-        return new ApiResponse<List<UserLogResponse>>(mapped);
+    
     }
 }

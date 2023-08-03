@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SP.Data;
 
@@ -11,9 +12,10 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    partial class SPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230803090612_migs")]
+    partial class migs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,6 +85,8 @@ namespace SP.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BuildingId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Apartments");
@@ -106,12 +110,12 @@ namespace SP.Data.Migrations
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
-                    b.Property<int>("SenderUserId")
+                    b.Property<int>("SenderId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SenderUserId");
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
                 });
@@ -142,6 +146,27 @@ namespace SP.Data.Migrations
                     b.HasKey("BankId");
 
                     b.ToTable("Banks");
+                });
+
+            modelBuilder.Entity("SP.Entity.Models.Building", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("BlockNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BuildingName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Building");
                 });
 
             modelBuilder.Entity("SP.Entity.Models.User", b =>
@@ -175,6 +200,7 @@ namespace SP.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TCNo")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -182,6 +208,7 @@ namespace SP.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VehiclePlateNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
@@ -267,11 +294,19 @@ namespace SP.Data.Migrations
 
             modelBuilder.Entity("SP.Entity.Apartment", b =>
                 {
+                    b.HasOne("SP.Entity.Models.Building", "Building")
+                        .WithMany("Apartments")
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SP.Entity.Models.User", "User")
                         .WithMany("Apartments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Building");
 
                     b.Navigation("User");
                 });
@@ -280,7 +315,7 @@ namespace SP.Data.Migrations
                 {
                     b.HasOne("SP.Entity.Models.User", "Sender")
                         .WithMany("Messages")
-                        .HasForeignKey("SenderUserId")
+                        .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -301,6 +336,11 @@ namespace SP.Data.Migrations
             modelBuilder.Entity("SP.Entity.Apartment", b =>
                 {
                     b.Navigation("MonthlyInvoices");
+                });
+
+            modelBuilder.Entity("SP.Entity.Models.Building", b =>
+                {
+                    b.Navigation("Apartments");
                 });
 
             modelBuilder.Entity("SP.Entity.Models.User", b =>

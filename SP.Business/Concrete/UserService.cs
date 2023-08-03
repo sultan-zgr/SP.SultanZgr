@@ -9,15 +9,15 @@ using SP.Schema.Response;
 
 namespace SP.Business.Concrete;
 
-//public class UserService : GenericService<User, UserRequest, UserResponse>, IUserService
-//{
+public class UserService : GenericService<User, UserRequest, UserResponse>, IUserService
+{
 
-//    private readonly IMapper mapper;
-//    private readonly IUnitOfWork unitOfWork;
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
 
-//    public UserService(IMapper mapper, IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
-//    {
-//        this.mapper = mapper;
-//        this.unitOfWork = unitOfWork;
-//    }
-//}
+    public UserService(IMapper mapper, IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+    {
+        _mapper = mapper;
+        _unitOfWork = unitOfWork;
+    }
+}

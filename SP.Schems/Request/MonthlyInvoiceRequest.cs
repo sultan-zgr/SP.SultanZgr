@@ -8,6 +8,7 @@ namespace SP.Schema.Request
 {
     public class MonthlyInvoiceRequest
     {
+        public int MonthlyInvoiceId { get; set; }
         public decimal DuesAmount { get; set; }
         public decimal WaterBill { get; set; }
         public decimal ElectricityBill { get; set; }

@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SP.Base.BaseResponse;
 using SP.Business.Abstract;
 using SP.Business.Concrete;
 using SP.Schema.Request;
 using SP.Schema.Response;
+using System.Data;
 using System.Security.Claims;
 
 namespace SP.API.Controller
 {
+    //[Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class MonthlyInvoiceController : ControllerBase
@@ -24,7 +27,7 @@ namespace SP.API.Controller
         //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<ApiResponse<List<MonthlyInvoiceResponse>>>> GetAllMonthlyInvoices()
         {
-            var response = await _monthlyInvoiceService.GetAll();
+            var response = await _monthlyInvoiceService.GetAll("Apartment");
             return Ok(response);
         }
 
@@ -32,7 +35,7 @@ namespace SP.API.Controller
         //[Authorize(Roles = "Admin")]
         public async Task<ActionResult<ApiResponse<MonthlyInvoiceResponse>>> GetMonthlyInvoiceById(int id)
         {
-            var response = await _monthlyInvoiceService.GetById(id, "Apartments");
+            var response = await _monthlyInvoiceService.GetById(id, "Apartment");
             if (!response.Success)
                 return NotFound(response);
 

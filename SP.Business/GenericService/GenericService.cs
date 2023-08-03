@@ -55,12 +55,14 @@ namespace SP.Business.GenericService
             try
             {
                 var entity = mapper.Map<TRequest, T>(request);
-                if (entity is User appUserEntity)
+
+                if (entity is User UserEntity)
                 {
-                    appUserEntity.UserName = "sultan@admin.com";
-                    appUserEntity.Password = "12345";
+                    UserEntity.Role = "User";
                 }
+
                 await unitOfWork.DynamicRepo<T>().InsertAsync(entity);
+                await unitOfWork.SaveChangesAsync();
 
                 return new ApiResponse();
             }
@@ -70,6 +72,7 @@ namespace SP.Business.GenericService
                 return new ApiResponse(ex.Message);
             }
         }
+
 
 
 

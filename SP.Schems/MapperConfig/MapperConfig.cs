@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using SP.Schema.Request.UserLog;
 using SP.Schema.Request;
-using SP.Schema.Response.UserLog;
 using SP.Schema.Response;
 using SP.Entity;
 using SP.Entity.Models;
@@ -12,19 +10,18 @@ public class MapperConfig : Profile
 {
     public MapperConfig()
     {
-        CreateMap<UserLogRequest, UserLog>();
+        CreateMap<UserLog, UserLogRequest>();
         CreateMap<UserLog, UserLogResponse>();
+
+        CreateMap<User, UserRequest>().ReverseMap();
+        CreateMap<User, UserResponse>().ReverseMap();
+
         CreateMap<ApartmentRequest, Apartment>();
         CreateMap<Apartment, ApartmentResponse>();
 
-        CreateMap<MonthlyInvoiceRequest, MonthlyInvoice>()
-            .ForMember(dest => dest.Apartment, opt => opt.MapFrom(src => src.Apartment));
-
+        CreateMap<MonthlyInvoice, MonthlyInvoiceRequest>();
         CreateMap<MonthlyInvoice, MonthlyInvoiceResponse>()
-            .ForMember(dest => dest.Apartment, opt => opt.MapFrom(src => src.Apartment));
-
-
-
+    .ForMember(dest => dest.Apartment, opt => opt.MapFrom(src => src.Apartment));
 
     }
 

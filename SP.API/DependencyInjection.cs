@@ -16,20 +16,20 @@ namespace SP.API
         public static void AddDependencyInjection(this IServiceCollection services)
         {
 
-           // services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<ITokenService, TokenService>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IGenericService<,,>), typeof(GenericService<,,>));
 
-         
 
-            services.AddScoped<IUserLogService, UserLogService>();
-     
 
             services.AddScoped<IApartmentService, ApartmentService>();
             services.AddScoped<IMonthlyInvoiceService, MonthlyInvoiceService>();
 
 
+
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserLogService, UserLogService>();
 
 
         }

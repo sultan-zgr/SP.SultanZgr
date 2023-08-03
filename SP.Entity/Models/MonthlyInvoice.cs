@@ -21,7 +21,7 @@ namespace SP.Entity
         public decimal GasBill { get; set; }
         public DateTime Date { get; set; }
         public int ApartmentId { get; set; }
-        [ForeignKey("ApartmentId")]
+     
         public Apartment Apartment { get; set; }
         public virtual ICollection<Payment> Payments { get; set; } // Ödemelerin koleksiyonu
     }

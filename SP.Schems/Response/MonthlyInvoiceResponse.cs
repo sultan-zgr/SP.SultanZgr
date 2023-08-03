@@ -15,5 +15,6 @@ namespace SP.Schema.Response
         public decimal GasBill { get; set; }
         public DateTime Date { get; set; }
         public ApartmentResponse Apartment { get; set; }
+
     }
 }

@@ -10,16 +10,15 @@ namespace SP.Schema.Request
     public class ApartmentRequest
     {
         public int UserId { get; set; }  
+        public int BuildingId { get; set; }  
         public bool IsOccupied { get; set; }
         public bool IsOwner { get; set; }
         public string Type { get; set; }
         public string BlockName { get; set; }
         public int FloorNumber { get; set; }
         public int ApartmentNumber { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string TCNo { get; set; }
-        public string VehiclePlateNumber { get; set; }
+
+       
     }
 
 

@@ -20,14 +20,10 @@ namespace SP.Entity
         public string Type { get; set; }
         public int FloorNumber { get; set; }
         public int ApartmentNumber { get; set; }
+        public int UserId { get; set; }
         public int BuildingId { get; set; }
-
-        public virtual Building Building { get; set; }
-        public string UserId { get; set; } = string.Empty;
-        [ForeignKey("UserId")]
-        public User User { get; set; }
-
         public virtual ICollection<MonthlyInvoice> MonthlyInvoices { get; set; }
+        public virtual User User { get; set; }
     }
 
 
