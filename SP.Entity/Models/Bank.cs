@@ -14,7 +14,6 @@ namespace SP.Entity.Models
         public string CreditCardNumber { get; set; } // Kullanıcının kredi kartı numarası
         public string ExpiryDate { get; set; } // Kredi kartının son kullanma tarihi (MM/YY formatında)
         public string CVV { get; set; } // Kredi kartının güvenlik kodu
-        public decimal Amount { get; set; } // Ödeme miktarı
     }
 
 }

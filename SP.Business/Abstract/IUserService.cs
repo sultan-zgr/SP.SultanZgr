@@ -9,5 +9,5 @@ namespace SP.Business.Abstract;
 
 public interface IUserService : IGenericService<User, UserRequest, UserResponse>
 {
-   
+  
 }

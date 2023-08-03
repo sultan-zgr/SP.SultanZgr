@@ -15,10 +15,7 @@ namespace SP.Entity
     public class MonthlyInvoice
     {
         public int Id { get; set; }
-        public decimal DuesAmount { get; set; }
-        public decimal WaterBill { get; set; }
-        public decimal ElectricityBill { get; set; }
-        public decimal GasBill { get; set; }
+        public decimal InvoiceAmount { get; set; }
         public DateTime Date { get; set; }
         public int ApartmentId { get; set; }
      

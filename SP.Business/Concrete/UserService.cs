@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using SP.Base;
+using SP.Base.BaseResponse;
 using SP.Business.Abstract;
 using SP.Business.GenericService;
 using SP.Data;
+using SP.Data.UnitOfWork;
 using SP.Entity;
 using SP.Entity.Models;
 using SP.Schema.Request;
@@ -20,4 +23,8 @@ public class UserService : GenericService<User, UserRequest, UserResponse>, IUse
         _mapper = mapper;
         _unitOfWork = unitOfWork;
     }
+
+  
 }
+
+   

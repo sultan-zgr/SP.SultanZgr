@@ -12,8 +12,8 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    [Migration("20230803150406_migs3")]
-    partial class migs3
+    [Migration("20230803172923_mig")]
+    partial class mig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

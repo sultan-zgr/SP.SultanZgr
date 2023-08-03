@@ -2,6 +2,7 @@
 using SP.Business.Abstract;
 using SP.Business.Concrete;
 using SP.Business.GenericService;
+using SP.Business.PaymentService;
 using SP.Business.Token;
 using SP.Data;
 using SP.Data.UnitOfWork;
@@ -30,6 +31,11 @@ namespace SP.API
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserLogService, UserLogService>();
+
+            services.AddScoped<IInvoicePaymentService, InvoicePaymentService>();
+            services.AddScoped<IBankService, BankService>();
+
+           //ervices.AddScoped<IInvoicePaymentService, InvoicePaymentService>();
 
 
         }

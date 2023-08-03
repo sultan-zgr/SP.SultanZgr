@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SP.Data.Migrations
 {
-    public partial class migs : Migration
+    public partial class mig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,20 +23,6 @@ namespace SP.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Banks", x => x.BankId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Building",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BuildingName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Building", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,8 +53,8 @@ namespace SP.Data.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordRetryCount = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    TCNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VehiclePlateNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TCNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VehiclePlateNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -86,18 +72,12 @@ namespace SP.Data.Migrations
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FloorNumber = table.Column<int>(type: "int", nullable: false),
                     ApartmentNumber = table.Column<int>(type: "int", nullable: false),
-                    BuildingId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    BuildingId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Apartments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Apartments_Building_BuildingId",
-                        column: x => x.BuildingId,
-                        principalTable: "Building",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Apartments_Users_UserId",
                         column: x => x.UserId,
@@ -115,14 +95,14 @@ namespace SP.Data.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
                     ApartmentId = table.Column<int>(type: "int", nullable: false),
-                    SenderId = table.Column<int>(type: "int", nullable: false)
+                    SenderUserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Messages_Users_SenderId",
-                        column: x => x.SenderId,
+                        name: "FK_Messages_Users_SenderUserId",
+                        column: x => x.SenderUserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
@@ -181,19 +161,14 @@ namespace SP.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Apartments_BuildingId",
-                table: "Apartments",
-                column: "BuildingId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Apartments_UserId",
                 table: "Apartments",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_SenderId",
+                name: "IX_Messages_SenderUserId",
                 table: "Messages",
-                column: "SenderId");
+                column: "SenderUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MonthlyInvoices_ApartmentId",
@@ -230,9 +205,6 @@ namespace SP.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Apartments");
-
-            migrationBuilder.DropTable(
-                name: "Building");
 
             migrationBuilder.DropTable(
                 name: "Users");

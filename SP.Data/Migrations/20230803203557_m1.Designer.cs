@@ -12,8 +12,8 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    [Migration("20230803090612_migs")]
-    partial class migs
+    [Migration("20230803203557_m1")]
+    partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -110,12 +110,12 @@ namespace SP.Data.Migrations
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
-                    b.Property<int>("SenderId")
+                    b.Property<int>("SenderUserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SenderId");
+                    b.HasIndex("SenderUserId");
 
                     b.ToTable("Messages");
                 });
@@ -127,9 +127,6 @@ namespace SP.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BankId"), 1L, 1);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CVV")
                         .IsRequired()
@@ -150,11 +147,11 @@ namespace SP.Data.Migrations
 
             modelBuilder.Entity("SP.Entity.Models.Building", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("BuildingId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BuildingId"), 1L, 1);
 
                     b.Property<string>("BlockNumber")
                         .IsRequired()
@@ -164,7 +161,7 @@ namespace SP.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("BuildingId");
 
                     b.ToTable("Building");
                 });
@@ -200,7 +197,6 @@ namespace SP.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TCNo")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -208,8 +204,10 @@ namespace SP.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VehiclePlateNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Wallet")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("UserId");
 
@@ -294,7 +292,7 @@ namespace SP.Data.Migrations
 
             modelBuilder.Entity("SP.Entity.Apartment", b =>
                 {
-                    b.HasOne("SP.Entity.Models.Building", "Building")
+                    b.HasOne("SP.Entity.Models.Building", null)
                         .WithMany("Apartments")
                         .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -306,8 +304,6 @@ namespace SP.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Building");
-
                     b.Navigation("User");
                 });
 
@@ -315,7 +311,7 @@ namespace SP.Data.Migrations
                 {
                     b.HasOne("SP.Entity.Models.User", "Sender")
                         .WithMany("Messages")
-                        .HasForeignKey("SenderId")
+                        .HasForeignKey("SenderUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

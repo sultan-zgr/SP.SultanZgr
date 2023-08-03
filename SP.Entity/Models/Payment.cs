@@ -15,7 +15,7 @@ namespace Patika.Entity.Models
     {
         public int Id { get; set; } // Ödeme işlemi için ID veya benzersiz kimlik alanı
         public DateTime PaymentDate { get; set; } // Ödeme tarihi
-        public decimal Amount { get; set; } // Ödeme miktarı
+        public decimal InvoiceAmount { get; set; } // Ödeme miktarı
         public int UserId { get; set; } // Ödeme yapan kullanıcının ID'si
       
         public virtual User User { get; set; } // Kullanıcı ile ilişki için dış anahtar

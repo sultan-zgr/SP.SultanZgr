@@ -21,6 +21,7 @@ public class SPDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<UserLog> UserLogs { get; set; }
+    public DbSet<Building> Building { get; set; }
     public DbSet<MonthlyInvoice> MonthlyInvoices { get; set; }
     public DbSet<Apartment> Apartments { get; set; }
     public DbSet<Messages> Messages { get; set; }
@@ -53,12 +54,8 @@ public class SPDbContext : DbContext
        .ToList();
 
 
-        modelBuilder.Entity<Payment>().Property(p => p.Amount).HasColumnType("decimal(18,2)");
-        modelBuilder.Entity<Bank>().Property(b => b.Amount).HasColumnType("decimal(18,2)");
-        modelBuilder.Entity<MonthlyInvoice>().Property(mi => mi.DuesAmount).HasColumnType("decimal(18,2)");
-        modelBuilder.Entity<MonthlyInvoice>().Property(mi => mi.ElectricityBill).HasColumnType("decimal(18,2)");
-        modelBuilder.Entity<MonthlyInvoice>().Property(mi => mi.GasBill).HasColumnType("decimal(18,2)");
-        modelBuilder.Entity<MonthlyInvoice>().Property(mi => mi.WaterBill).HasColumnType("decimal(18,2)");
+        modelBuilder.Entity<Payment>().Property(p => p.InvoiceAmount).HasColumnType("decimal(18,2)");
+        modelBuilder.Entity<MonthlyInvoice>().Property(mi => mi.InvoiceAmount).HasColumnType("decimal(18,2)");
 
 
         modelBuilder.Entity<Payment>()

@@ -15,6 +15,7 @@ namespace SP.Entity.Models
     public class User
     {
         public int UserId { get; set; }
+        public decimal Wallet { get; set; }
         public string Role { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
