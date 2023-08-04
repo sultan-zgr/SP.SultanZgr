@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
+using System.Reflection.Emit;
 
 namespace SP.Entity.Models
 {
@@ -15,7 +16,7 @@ namespace SP.Entity.Models
     public class User
     {
         public int UserId { get; set; }
-        public decimal Wallet { get; set; }
+        public decimal Balance { get; set; }
         public string Role { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
@@ -31,6 +32,7 @@ namespace SP.Entity.Models
         // İlişkiler
         public List<Messages> Messages { get; set; } // Kullanıcının gönderdiği mesajlar
         public List<Payment> Payments { get; set; } // Kullanıcının yaptığı ödemeler
+        public bool IsPayment  { get; set; }
         public List<Apartment> Apartments { get; set; } // Kullanıcının sahip olduğu daireler
     }
     public class UserConfiguration : IEntityTypeConfiguration<User>
@@ -58,6 +60,9 @@ namespace SP.Entity.Models
 
             // User ile UserRole arasındaki ilişkiyi belirleme
             builder.HasOne(x => x.Role).WithMany().HasForeignKey("RoleId").OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(u => u.Balance)
+             .HasColumnType("decimal(18, 2)");
         }
     }
 }

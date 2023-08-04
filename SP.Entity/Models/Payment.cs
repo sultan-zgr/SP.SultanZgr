@@ -13,17 +13,16 @@ namespace Patika.Entity.Models
 {
     public class Payment
     {
-        public int Id { get; set; } // Ödeme işlemi için ID veya benzersiz kimlik alanı
+        public int Id { get; set; } 
         public DateTime PaymentDate { get; set; } // Ödeme tarihi
         public decimal InvoiceAmount { get; set; } // Ödeme miktarı
         public int UserId { get; set; } // Ödeme yapan kullanıcının ID'si
-      
-        public virtual User User { get; set; } // Kullanıcı ile ilişki için dış anahtar
-
         public int MonthlyInvoiceId { get; set; }
-
- 
+        public decimal Balance { get; set; }  //USERIN CÜZDANI
         public virtual MonthlyInvoice MonthlyInvoice { get; set; }
+        public bool IsSuccessful { get; set; } // Ödeme başarılı mı?
+        public string Message { get; set; } 
+        public decimal NewBalance { get; set; } // Ödeme sonrasında güncellenen cüzdan bakiyesi 
 
         public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         {
@@ -35,6 +34,8 @@ namespace Patika.Entity.Models
                     .HasForeignKey(p => p.MonthlyInvoiceId)
                     .OnDelete(DeleteBehavior.Restrict);
                 // ...
+                builder.Property(p => p.UserId)
+            .IsRequired();
             }
         }
 

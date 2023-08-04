@@ -12,8 +12,8 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    [Migration("20230803203557_m1")]
-    partial class m1
+    [Migration("20230804142058_mailkita")]
+    partial class mailkita
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,11 +32,24 @@ namespace SP.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("InvoiceAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsSuccessful")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("MonthlyInvoiceId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("NewBalance")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
@@ -174,6 +187,9 @@ namespace SP.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -181,6 +197,9 @@ namespace SP.Data.Migrations
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPayment")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -205,9 +224,6 @@ namespace SP.Data.Migrations
 
                     b.Property<string>("VehiclePlateNumber")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Wallet")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("UserId");
 
@@ -252,16 +268,7 @@ namespace SP.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal>("DuesAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("ElectricityBill")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("GasBill")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("WaterBill")
+                    b.Property<decimal>("InvoiceAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -279,15 +286,13 @@ namespace SP.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SP.Entity.Models.User", "User")
+                    b.HasOne("SP.Entity.Models.User", null)
                         .WithMany("Payments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("MonthlyInvoice");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SP.Entity.Apartment", b =>

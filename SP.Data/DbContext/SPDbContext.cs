@@ -64,6 +64,14 @@ public class SPDbContext : DbContext
             .HasForeignKey(p => p.MonthlyInvoiceId)
             .OnDelete(DeleteBehavior.Restrict);
 
+        modelBuilder.Entity<Payment>()
+            .Property(p => p.Balance)
+            .HasColumnType("decimal(18, 2)"); // Example: 18 digits with 2 decimal places
+
+        // Configure the 'Balance' property of the 'User' entity
+        modelBuilder.Entity<User>()
+            .Property(u => u.Balance)
+            .HasColumnType("decimal(18, 2)");
         //modelBuilder.ApplyConfiguration(new AdminConfiguration());
 
         base.OnModelCreating(modelBuilder);

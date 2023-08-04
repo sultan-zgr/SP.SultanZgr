@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using SP.Base;
 using SP.Base.BaseResponse;
 using SP.Business.Abstract;
@@ -7,6 +8,7 @@ using SP.Data;
 using SP.Data.UnitOfWork;
 using SP.Entity;
 using SP.Entity.Models;
+using SP.Schema;
 using SP.Schema.Request;
 using SP.Schema.Response;
 
@@ -24,7 +26,21 @@ public class UserService : GenericService<User, UserRequest, UserResponse>, IUse
         _unitOfWork = unitOfWork;
     }
 
-  
+    public async Task<ApiResponse<List<User>>> GetUsersWithPendingPayments()
+    {
+        try
+        {
+            IQueryable<User> usersWithPendingPayments = _unitOfWork.DynamicRepo<User>().Where(m => !m.IsPayment).AsQueryable();
+            List<User> userList = await usersWithPendingPayments.ToListAsync();
+            return new ApiResponse<List<User>>(data: userList);
+
+        }
+        catch (Exception ex)
+        {
+
+            throw new Exception("Error while fetching users with pending payments: " + ex.Message);
+        }
+    }
 }
 
    

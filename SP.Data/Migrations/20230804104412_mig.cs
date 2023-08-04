@@ -17,12 +17,25 @@ namespace SP.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreditCardNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExpiryDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CVV = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    CVV = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Banks", x => x.BankId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Building",
+                columns: table => new
+                {
+                    BuildingId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BuildingName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BlockNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Building", x => x.BuildingId);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,6 +59,7 @@ namespace SP.Data.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -78,6 +92,12 @@ namespace SP.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Apartments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Apartments_Building_BuildingId",
+                        column: x => x.BuildingId,
+                        principalTable: "Building",
+                        principalColumn: "BuildingId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Apartments_Users_UserId",
                         column: x => x.UserId,
@@ -114,10 +134,7 @@ namespace SP.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DuesAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    WaterBill = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ElectricityBill = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    GasBill = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    InvoiceAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ApartmentId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -139,9 +156,12 @@ namespace SP.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    InvoiceAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    MonthlyInvoiceId = table.Column<int>(type: "int", nullable: false)
+                    UserAcccountId = table.Column<int>(type: "int", nullable: false),
+                    UserAccountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MonthlyInvoiceId = table.Column<int>(type: "int", nullable: false),
+                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -159,6 +179,11 @@ namespace SP.Data.Migrations
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Apartments_BuildingId",
+                table: "Apartments",
+                column: "BuildingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Apartments_UserId",
@@ -205,6 +230,9 @@ namespace SP.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Apartments");
+
+            migrationBuilder.DropTable(
+                name: "Building");
 
             migrationBuilder.DropTable(
                 name: "Users");

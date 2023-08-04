@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SP.Base.JWT;
+using SP.Business.Abstract;
+using SP.Business.Concrete;
+using SP.Business;
 using SP.Data;
 using SP.Schema;
 using System.Text;
@@ -22,6 +25,13 @@ namespace SP.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Mail
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMailService, MailService>();
+
+            // E-posta gönderimi için yapılandırmayı ekleyin.
+            services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+
             //...
             services.AddAuthentication(x =>
             {
