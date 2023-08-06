@@ -262,7 +262,7 @@ After preparing our service, we configure the necessary Jwt settings in the apps
 - "Audience": Specifies the intended audience for the JWT, i.e., the application or service that can consume it.
 - "AccessTokenExpiration": Defines the expiration time for the access token in minutes after which it becomes invalid, requiring re-authentication.
 
-Ardından startup.cs açıyoruz ve burada JwtConfig'imizi geçiyoruz;
+Afterwards, we open startup.cs and pass our JwtConfig in there;;
 ```c#
 public static JwtConfig JwtConfig { get; private set; }
  JwtConfig = Configuration.GetSection("JwtConfig").Get<JwtConfig>();
@@ -370,7 +370,7 @@ One important thing to note here is that when we enter our password, it is encry
 ## 📝 Now that we have completed the login process let's briefly explain how the system works.
 - For example, let's perform an addition and payment process from scratch to understand how it works.
 
-ApartmentController içerisinde CRUD işlemleri bulunmaktadır mesela sıfırdan bir kullanıcıya daire atayalım,
+The ApartmentController contains CRUD operations; for instance, let's assign an apartment to a new user from scratch,
 
 ```c#
   [HttpPost]
