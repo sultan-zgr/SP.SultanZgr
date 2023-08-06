@@ -21,7 +21,7 @@ This project is the Site Management API Project, and our expectations for this p
 
 By organizing our project into these distinct layers, we achieve modularity, separation of concerns, and maintainability, making it easier to develop and manage the application.
 
-## Projemizin işleyişini anlatmaya başlayabiliriz,
+## We can now start explaining how our project works.,
 In this project, we emphasize asynchronous programming and generic structures to improve code efficiency and follow clean code principles. We use **ApiResponse<T>** to handle API call results uniformly. Asynchronous programming enhances responsiveness and scalability, while generics enable reusable code for different data types. 
 ```c#
  public partial class ApiResponse<T>
