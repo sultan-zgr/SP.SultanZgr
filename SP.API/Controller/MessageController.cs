@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SP.API.RabbitMq.Producer;
 using SP.Base.BaseResponse;
@@ -7,6 +8,7 @@ using SP.Data;
 using SP.Entity;
 using SP.Schema.Request;
 using SP.Schema.Response;
+using System.Data;
 
 namespace SP.API.Controller
 {
@@ -25,16 +27,16 @@ namespace SP.API.Controller
 
         }
         [HttpPost]
+        [Authorize(Roles = "user")]
         public async Task<ApiResponse<MessagesResponse>> SendMessage([FromBody] MessagesRequest request)
         {
             _rabbitMqProducer.SendMessage(request);
-
-            // Insert the message into the database using the IMessageService.
             var response = await _messageService.UserSendMessageAsync(request);
 
             return response;
         }
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<ApiResponse<List<MessagesResponse>>> GetAllMessages()
         {
             var response = await _messageService.GetAll();

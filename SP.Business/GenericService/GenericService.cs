@@ -88,7 +88,7 @@ namespace SP.Business.GenericService
 
                 var entity = mapper.Map<TRequest, T>(request);
                 await unitOfWork.DynamicRepo<T>().UpdateAsync(entity);
-                await unitOfWork.SaveChangesAsync();                                //UOW İÇERİSİNDEN DÖNEN SAVECHANGESİ KULLANIYORUM
+                await unitOfWork.SaveChangesAsync();                             
                 return new ApiResponse();
             }
             catch (Exception ex)
@@ -108,7 +108,7 @@ namespace SP.Business.GenericService
                     return new ApiResponse("Record not found!");
                 }
                 await unitOfWork.DynamicRepo<T>().DeleteAsync(Id);
-                await unitOfWork.SaveChangesAsync();                             //UOW İÇERİSİNDEN DÖNEN SAVECHANGESİ KULLANIYORUM
+                await unitOfWork.SaveChangesAsync();                           
                 return new ApiResponse();
             }
             catch (Exception ex)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SP.Business
+namespace SP.Business.MailService
 {
     public class SmtpSettings
     {
@@ -12,7 +12,7 @@ namespace SP.Business
         public int Port { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
-        public string AdminEmail  { get; set; }
+        public string AdminEmail { get; set; }
         public bool EnableSsl { get; set; }
     }
 }

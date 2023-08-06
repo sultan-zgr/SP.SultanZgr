@@ -98,7 +98,7 @@ namespace SP.Business.Concrete
                 InvoiceAmount = request.Amount,
                 Balance = userAccount.Balance - request.Amount,
 
-                Message = "Ödeme başarıyla gerçekleştirildi.",
+                Message = "Payment successfully completed",
                 NewBalance = userAccount.Balance - request.Amount
             };
             userAccount.Balance -= request.Amount;

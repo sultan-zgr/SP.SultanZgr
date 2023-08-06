@@ -12,8 +12,8 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    [Migration("20230806111130_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230806203815_FinalMigration")]
+    partial class FinalMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,6 +48,9 @@ namespace SP.Data.Migrations
                     b.Property<int>("MonthlyInvoiceId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("MonthlyInvoiceId1")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("NewBalance")
                         .HasColumnType("decimal(18,2)");
 
@@ -60,6 +63,8 @@ namespace SP.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MonthlyInvoiceId");
+
+                    b.HasIndex("MonthlyInvoiceId1");
 
                     b.HasIndex("UserId");
 
@@ -272,18 +277,16 @@ namespace SP.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MonthlyInvoiceId"), 1L, 1);
 
-                    b.Property<int>("ApartmentId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("InvoiceAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("MonthlyInvoiceId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ApartmentId");
+                    b.HasKey("MonthlyInvoiceId");
 
                     b.ToTable("MonthlyInvoices");
                 });
@@ -291,10 +294,14 @@ namespace SP.Data.Migrations
             modelBuilder.Entity("Patika.Entity.Models.Payment", b =>
                 {
                     b.HasOne("SP.Entity.MonthlyInvoice", "MonthlyInvoice")
-                        .WithMany("Payments")
+                        .WithMany()
                         .HasForeignKey("MonthlyInvoiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("SP.Entity.MonthlyInvoice", null)
+                        .WithMany("Payments")
+                        .HasForeignKey("MonthlyInvoiceId1");
 
                     b.HasOne("SP.Entity.Models.User", null)
                         .WithMany("Payments")
@@ -343,22 +350,6 @@ namespace SP.Data.Migrations
                     b.Navigation("Receiver");
 
                     b.Navigation("Sender");
-                });
-
-            modelBuilder.Entity("SP.Entity.MonthlyInvoice", b =>
-                {
-                    b.HasOne("SP.Entity.Apartment", "Apartment")
-                        .WithMany("MonthlyInvoices")
-                        .HasForeignKey("ApartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Apartment");
-                });
-
-            modelBuilder.Entity("SP.Entity.Apartment", b =>
-                {
-                    b.Navigation("MonthlyInvoices");
                 });
 
             modelBuilder.Entity("SP.Entity.Models.Building", b =>

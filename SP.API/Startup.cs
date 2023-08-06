@@ -6,11 +6,11 @@ using Microsoft.OpenApi.Models;
 using SP.Base.JWT;
 using SP.Business.Abstract;
 using SP.Business.Concrete;
-using SP.Business;
 using SP.Data;
 using SP.Schema;
 using System.Text;
 using SP.Schema.Middleware;
+using SP.Business.MailService;
 
 namespace SP.API
 {
@@ -61,7 +61,7 @@ namespace SP.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SP.API", Version = "v1" });
 
-                #region Token Auth Button
+            #region Token Auth Button
                 var securityScheme = new OpenApiSecurityScheme
                 {
                     Name = "Sim Management for IT Company",

@@ -19,12 +19,12 @@ public class MapperConfig : Profile
         CreateMap<User, UserAccountResponse>().ReverseMap();
         CreateMap<User, UserResponse>().ReverseMap();
 
-        CreateMap<ApartmentRequest, Apartment>();
-        CreateMap<Apartment, ApartmentResponse>();
+        CreateMap<ApartmentRequest, Apartment>().ReverseMap();
+        CreateMap<Apartment, ApartmentResponse>().ReverseMap();
 
         CreateMap<MonthlyInvoice, MonthlyInvoiceRequest>().ReverseMap();
-        CreateMap<MonthlyInvoice, MonthlyInvoiceResponse>().ReverseMap()
-    .ForMember(dest => dest.Apartment, opt => opt.MapFrom(src => src.Apartment));
+        CreateMap<MonthlyInvoice, MonthlyInvoiceResponse>().ReverseMap();
+  
 
         CreateMap<PaymentRequest, Payment>().ReverseMap();
         CreateMap<PaymentResponse, Payment>().ReverseMap(); 

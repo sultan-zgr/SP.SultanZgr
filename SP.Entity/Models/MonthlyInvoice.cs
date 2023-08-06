@@ -17,10 +17,9 @@ namespace SP.Entity
         public int MonthlyInvoiceId { get; set; }
         public decimal InvoiceAmount { get; set; }
         public DateTime Date { get; set; }
-        public int ApartmentId { get; set; }
-     
-        public Apartment Apartment { get; set; }
-        public virtual ICollection<Payment> Payments { get; set; } // Ödemelerin koleksiyonu
+        public int UserId { get; set; }
+
+        public virtual ICollection<Payment> Payments { get; set; } 
     }
 
 

@@ -37,7 +37,7 @@ namespace SP.Data.GenericRepo
         public Task<T> GetByIdWithIncludeAsync(int id, params string[] includes)
         {
             var query = _dbContext.Set<T>().AsQueryable();
-            query = includes.Aggregate(query, (current, inc) => current.Include(inc));  //current ele alınan db sorgusunu temsilen
+            query = includes.Aggregate(query, (current, inc) => current.Include(inc)); 
             return query.FirstOrDefaultAsync();
         }
         public async Task UpdateAsync(T t)

@@ -21,31 +21,25 @@ namespace SP.API
             services.AddScoped<ITokenService, TokenService>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
             services.AddScoped(typeof(IGenericService<,,>), typeof(GenericService<,,>));
-
-
-
+            
             services.AddScoped<IApartmentService, ApartmentService>();
+            
             services.AddScoped<IMonthlyInvoiceService, MonthlyInvoiceService>();
 
             services.AddScoped<IUserAccountService, UserAccountService>();
             services.AddScoped<IInvoicePaymentService, InvoicePaymentService>();
 
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUserLogService, UserLogService>();
-
-         
-          
+            services.AddScoped<IUserLogService, UserLogService>();         
+            
             services.AddScoped<IInvoicePaymentService, InvoicePaymentService>();
 
             services.AddScoped<IMessageService, MessageService>();
+            
             services.AddScoped<IRabbitMqProducer, RabbitMqProducer>();
-       
-
-           
-
-           //ervices.AddScoped<IInvoicePaymentService, InvoicePaymentService>();
-
+      
 
         }
     }

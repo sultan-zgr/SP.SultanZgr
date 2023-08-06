@@ -8,7 +8,7 @@ using SP.Schema.Response;
 
 namespace SP.API.Controller
 {
-   // [Authorize(Roles = "Admin")]
+   [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class ApartmentController : ControllerBase
@@ -20,7 +20,7 @@ namespace SP.API.Controller
             _service = service;
         }
         [HttpGet]
-        //[Authorize(Roles = "Admin")]
+       
         public async Task<ApiResponse<List<ApartmentResponse>>> GetAllApartments()
         {
             var response = await _service.GetAll(); 
@@ -28,7 +28,7 @@ namespace SP.API.Controller
         }
 
         [HttpGet("{id}")]
-        //[Authorize(Roles = "Admin")]
+      
         public async Task<ApiResponse<ApartmentResponse>> GetApartmentById(int id)
         {
             var response = await _service.GetById(id); 
@@ -36,7 +36,7 @@ namespace SP.API.Controller
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
+     
         public async Task<ApiResponse> AddApartment([FromBody] ApartmentRequest request)
         {
             var response = await _service.Insert(request);
@@ -45,7 +45,7 @@ namespace SP.API.Controller
         }
 
         [HttpPut("{id}")]
-        //[Authorize(Roles = "Admin")]
+      
         public async Task<ApiResponse> UpdateApartment(int id, [FromBody] ApartmentRequest request)
         {
             var response = await _service.Update(id, request);
@@ -53,7 +53,7 @@ namespace SP.API.Controller
         }
 
         [HttpDelete("{id}")]
-        //[Authorize(Roles = "Admin")]
+      
         public async Task<ApiResponse> DeleteApartment(int id)
         {
             var response = await _service.Delete(id);

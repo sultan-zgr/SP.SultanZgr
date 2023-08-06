@@ -22,7 +22,6 @@ namespace SP.Entity
         public int ApartmentNumber { get; set; }
         public int UserId { get; set; }
         public int BuildingId { get; set; }
-        public virtual ICollection<MonthlyInvoice> MonthlyInvoices { get; set; }
         public virtual User User { get; set; }
     }
 

@@ -11,7 +11,7 @@ using System.Text;
 
 namespace SP.API.Controller
 {
-
+    [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -23,21 +23,17 @@ namespace SP.API.Controller
             _service = service;
         }
 
-        [Authorize(Roles = "admin")]
+     
         [HttpPost]
-
         public async Task<ApiResponse> UserCreate([FromBody] UserRequest request)
         {
             string hashedPassword = CalculateMD5Hash(request.Password);
             request.Password = hashedPassword;
 
-            var response = await _service.Insert(request); // UserService servisindeki Insert metodu veritabanına kayıt ediyor.
+            var response = await _service.Insert(request); 
 
             return response;
         }
-
-
-        // MD5 hesaplama işlemi için yardımcı metot
         private string CalculateMD5Hash(string input)
         {
             using (MD5 md5 = MD5.Create())

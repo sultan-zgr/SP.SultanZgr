@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SP.Schema.Response;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,10 @@ namespace SP.Schema.Request
 {
     public class MonthlyInvoiceRequest
     {
-        public int MonthlyInvoiceId { get; set; }
+        public int UserId { get; set; }
         public decimal InvoiceAmount { get; set; }
         public DateTime Date { get; set; }
-        public ApartmentRequest Apartment { get; set; } 
+  
+
     }
 }

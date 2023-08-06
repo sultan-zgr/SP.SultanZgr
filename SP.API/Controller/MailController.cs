@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SP.Business.Abstract;
-using SP.Business;
+using SP.Business.MailService;
+using System.Data;
 
 namespace SP.API.Controller
 {
+    [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class MailController : ControllerBase
@@ -22,16 +25,13 @@ namespace SP.API.Controller
         {
             try
             {
-
                 var response = await _userService.GetUsersWithPendingPayments();
-
                 if (response.Success && response.Response != null)
                 {
                     foreach (var user in response.Response)
                     {
                         await _mailService.SendReminderEmail(user.Email);
                     }
-
                     return Ok("Payment reminders sent successfully!");
                 }
                 else

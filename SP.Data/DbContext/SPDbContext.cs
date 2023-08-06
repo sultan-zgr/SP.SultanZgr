@@ -30,7 +30,7 @@ public class SPDbContext : DbContext
     #endregion
     protected override void OnModelCreating(ModelBuilder modelBuilder)  
     {
-        //  DbContext'in Assembly
+        //  DbContext Assembly
         var assembly = Assembly.GetExecutingAssembly();
 
         var configurationTypes = assembly.GetTypes()

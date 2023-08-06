@@ -4,20 +4,16 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace SP.Business
+namespace SP.Business.MailService
 {
-
-    public interface IMailService
+  public interface IMailService
     {
         Task SendReminderEmail(string userEmail);
     }
     public class MailService : IMailService
     {
         private readonly System.Timers.Timer _timer;
-
         private readonly SmtpSettings _smtpSettings;
-
-
 
         public MailService(IOptions<SmtpSettings> smtpSettings)
         {
@@ -25,7 +21,6 @@ namespace SP.Business
             _timer = new System.Timers.Timer(86400000); // 24 hours in milliseconds
             _timer.Elapsed += async (sender, e) => await SendReminderEmail(_smtpSettings.AdminEmail);
             _timer.Start();
-
         }
 
         public async Task SendReminderEmail(string userEmail)
@@ -33,8 +28,8 @@ namespace SP.Business
             try
             {
                 var fromEmail = _smtpSettings.AdminEmail;
-                var subject = "Ödeme Hatırlatması";
-                var body = "Ödemenizi yapmayı unutmayınız!";
+                var subject = "Payment Reminder";
+                var body = "Don't forget to make your payment!";
 
                 var mailMessage = new MailMessage(fromEmail, userEmail, subject, body);
                 var smtpClient = new SmtpClient(_smtpSettings.Server, _smtpSettings.Port)

@@ -83,7 +83,7 @@ namespace SP.Business.Token
             user.Status = 1;
 
 
-            unitOfWork.DynamicRepo<User>().UpdateAsync(user); // UpdateAsync metodu asenkron çalışıyor
+            unitOfWork.DynamicRepo<User>().UpdateAsync(user); 
             unitOfWork.SaveChangesAsync();
 
 

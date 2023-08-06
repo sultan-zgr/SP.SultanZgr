@@ -37,7 +37,7 @@ namespace SP.Business.Concrete
 
                 if (senderUser == null || receiverUser == null)
                 {
-                    return new ApiResponse<MessagesResponse>("BOŞ");
+                    return new ApiResponse<MessagesResponse>("Cannot be left blank");
                 }
 
                 // Create a new message object
@@ -62,7 +62,7 @@ namespace SP.Business.Concrete
                 // Save changes to the database
                 await _unitOfWork.SaveChangesAsync();
 
-                return new ApiResponse<MessagesResponse>("Mesajınız iletilmiştir.");
+                return new ApiResponse<MessagesResponse>("Your message has been delivered..");
             }
 
             catch (Exception ex)

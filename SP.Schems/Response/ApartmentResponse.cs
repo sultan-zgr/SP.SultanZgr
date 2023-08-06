@@ -9,7 +9,9 @@ namespace SP.Schema.Response
     public class ApartmentResponse
     {
         public int UserId { get; set; }
+        public int ApartmentId { get; set; }
         public int BuildingId { get; set; }
+        public string Type { get; set; }
         public int FloorNumber { get; set; }
         public int ApartmentNumber { get; set; }
     }

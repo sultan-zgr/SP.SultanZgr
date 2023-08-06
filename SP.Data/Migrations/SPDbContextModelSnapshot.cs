@@ -275,18 +275,16 @@ namespace SP.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MonthlyInvoiceId"), 1L, 1);
 
-                    b.Property<int>("ApartmentId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("InvoiceAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("MonthlyInvoiceId");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ApartmentId");
+                    b.HasKey("MonthlyInvoiceId");
 
                     b.ToTable("MonthlyInvoices");
                 });
@@ -350,22 +348,6 @@ namespace SP.Data.Migrations
                     b.Navigation("Receiver");
 
                     b.Navigation("Sender");
-                });
-
-            modelBuilder.Entity("SP.Entity.MonthlyInvoice", b =>
-                {
-                    b.HasOne("SP.Entity.Apartment", "Apartment")
-                        .WithMany("MonthlyInvoices")
-                        .HasForeignKey("ApartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Apartment");
-                });
-
-            modelBuilder.Entity("SP.Entity.Apartment", b =>
-                {
-                    b.Navigation("MonthlyInvoices");
                 });
 
             modelBuilder.Entity("SP.Entity.Models.Building", b =>
