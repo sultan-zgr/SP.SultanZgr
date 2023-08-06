@@ -134,8 +134,8 @@ UnitOfWork (UoW) allows you to aggregate changes made within a transaction or a 
 Thanks to DynamicRepo<T>, we can perform database operations with a single method instead of repeatedly writing the same database operations for different entity types.
 
 ## Login with Token 🎟
-Token için bi servis yazıyoruz
-Önce interfacesini oluşturalım 
+We are writing a service for the token.
+Let's first create its interface
 ```c#
  public interface ITokenService
     {
@@ -248,7 +248,7 @@ This code snippet creates a JWT (JSON Web Token) for the user. JWT is a token us
 
  ```
 
-Servisimizi hazırladıktan sonra appsetting.json içerisinde gerekli Jwt Configuration ayarlarını yapıyoruz,
+After preparing our service, we configure the necessary Jwt settings in the appsettings.json file,
 ```c#
   "JwtConfig": {
     "Secret": "BeHappyMakeHappy",
