@@ -30,7 +30,8 @@ namespace SP.Entity.Models
         // Diğer özel alanlarınızı da ekleyebilirsiniz.
 
         // İlişkiler
-        public List<Messages> Messages { get; set; } // Kullanıcının gönderdiği mesajlar
+        public List<Messages> MessagesSending { get; set; } // Kullanıcının gönderdiği mesajlar
+      
         public List<Payment> Payments { get; set; } // Kullanıcının yaptığı ödemeler
         public bool IsPayment  { get; set; }
         public List<Apartment> Apartments { get; set; } // Kullanıcının sahip olduğu daireler
@@ -54,7 +55,8 @@ namespace SP.Entity.Models
             builder.Property(x => x.VehiclePlateNumber).HasMaxLength(20);
 
             // İlişkiler
-            builder.HasMany(x => x.Messages).WithOne().HasForeignKey("UserId").OnDelete(DeleteBehavior.Restrict);
+            builder.HasMany(x => x.MessagesSending).WithOne().HasForeignKey("SenderId").OnDelete(DeleteBehavior.NoAction);
+            //builder.HasMany(x => x.MessagesReceivng).WithOne().HasForeignKey("ReceiverId").OnDelete(DeleteBehavior.NoAction);
             builder.HasMany(x => x.Payments).WithOne().HasForeignKey("UserId").OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(x => x.Apartments).WithOne().HasForeignKey("UserId").OnDelete(DeleteBehavior.Restrict);
 
@@ -63,6 +65,9 @@ namespace SP.Entity.Models
 
             builder.Property(u => u.Balance)
              .HasColumnType("decimal(18, 2)");
+
+            builder.Property(p=> p.Payments)
+        .HasColumnType("decimal(18, 2)");
         }
     }
 }

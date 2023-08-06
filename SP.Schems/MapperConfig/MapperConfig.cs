@@ -4,6 +4,7 @@ using SP.Schema.Response;
 using SP.Entity;
 using SP.Entity.Models;
 using Patika.Entity.Models;
+using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 
 namespace SP.Schema;
 
@@ -20,8 +21,8 @@ public class MapperConfig : Profile
         CreateMap<ApartmentRequest, Apartment>();
         CreateMap<Apartment, ApartmentResponse>();
 
-        CreateMap<MonthlyInvoice, MonthlyInvoiceRequest>();
-        CreateMap<MonthlyInvoice, MonthlyInvoiceResponse>()
+        CreateMap<MonthlyInvoice, MonthlyInvoiceRequest>().ReverseMap();
+        CreateMap<MonthlyInvoice, MonthlyInvoiceResponse>().ReverseMap()
     .ForMember(dest => dest.Apartment, opt => opt.MapFrom(src => src.Apartment));
 
         CreateMap<PaymentRequest, Payment>().ReverseMap();
@@ -29,6 +30,9 @@ public class MapperConfig : Profile
 
         CreateMap<Bank, BankRequest>().ReverseMap(); 
         CreateMap<Bank, BankResponse>().ReverseMap(); 
+
+        CreateMap<Messages,MessagesRequest>().ReverseMap();
+        CreateMap<Messages,MessagesResponse>().ReverseMap();
     }
 
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SP.Data.Migrations
 {
-    public partial class mig : Migration
+    public partial class m1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,7 +68,8 @@ namespace SP.Data.Migrations
                     PasswordRetryCount = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     TCNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VehiclePlateNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    VehiclePlateNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsPayment = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -132,7 +133,7 @@ namespace SP.Data.Migrations
                 name: "MonthlyInvoices",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    MonthlyInvoiceId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     InvoiceAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -140,7 +141,7 @@ namespace SP.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MonthlyInvoices", x => x.Id);
+                    table.PrimaryKey("PK_MonthlyInvoices", x => x.MonthlyInvoiceId);
                     table.ForeignKey(
                         name: "FK_MonthlyInvoices_Apartments_ApartmentId",
                         column: x => x.ApartmentId,
@@ -158,10 +159,11 @@ namespace SP.Data.Migrations
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     InvoiceAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    UserAcccountId = table.Column<int>(type: "int", nullable: false),
-                    UserAccountName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MonthlyInvoiceId = table.Column<int>(type: "int", nullable: false),
-                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsSuccessful = table.Column<bool>(type: "bit", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NewBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -170,7 +172,7 @@ namespace SP.Data.Migrations
                         name: "FK_Payments_MonthlyInvoices_MonthlyInvoiceId",
                         column: x => x.MonthlyInvoiceId,
                         principalTable: "MonthlyInvoices",
-                        principalColumn: "Id",
+                        principalColumn: "MonthlyInvoiceId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Payments_Users_UserId",

@@ -4,7 +4,7 @@
 
 namespace SP.Data.Migrations
 {
-    public partial class mailkita : Migration
+    public partial class m5 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -9,6 +9,7 @@ using SP.Schema.Response;
 using SP.Base;
 using SP.Data.UnitOfWork;
 using SP.Entity;
+using SP.Entity.Models;
 
 namespace SP.Business.Concrete
 {
@@ -51,90 +52,62 @@ namespace SP.Business.Concrete
 
         public async Task<ApiResponse<TransferReponse>> PayAsync(CashRequest request)
         {
-            // Your existing code to check the request and retrieve the user account
             if (request == null)
-            {
                 return new ApiResponse<TransferReponse>("Invalid Request");
-            }
 
-            ApiResponse<UserAccountResponse> accountResponse = await _userAccountService.GetById(request.UserId);
-            UserAccountResponse userAccount = accountResponse.Response;
+            if (request.CreditCardNumber == null || request.CreditCardNumber.Length != 19)
+                return new ApiResponse<TransferReponse>("Invalid Credit Card Number");
 
-            // Ödeme işlemi için gerekli kontroller
+            // Validate CVV
+            if (request.CVV == null || request.CVV.Length == 3)
+                return new ApiResponse<TransferReponse>("Invalid CVV");
+
+            // Validate expiration date
+            if (request.ExpirationDate == null || request.ExpirationDate.Length == 5)
+                return new ApiResponse<TransferReponse>("Invalid Expiration Date");
+
+
+            User userAccount = await _unitOfWork.DynamicRepo<User>().GetByIdAsync(request.UserId);
+
             if (userAccount == null)
-            {
                 return new ApiResponse<TransferReponse>("Invalid User Account");
-            }
-
-            // Check if the user has any monthly invoices
-            
-            ApiResponse<MonthlyInvoiceResponse> monthlyInvoiceResponse = await _monthlyInvoiceService.GetById(request.UserId);
-            MonthlyInvoiceResponse userMonthlyInvoice = monthlyInvoiceResponse.Response;
 
 
-            // Calculate the total amount due for the monthly invoices
-            if (userMonthlyInvoice == null)
-            {
+            MonthlyInvoice monthlyInvoice = await _unitOfWork.DynamicRepo<MonthlyInvoice>().GetByIdAsync(request.MonthlyInvoiceId);
+
+
+            if (monthlyInvoice == null)
                 return new ApiResponse<TransferReponse>("User does not have any monthly invoices");
-            }
 
-            // Ödeme tutarını kontrol et
-            decimal totalMonthlyInvoiceAmount = userMonthlyInvoice.DuesAmount;
 
-            // Calculate the total payment amount (requested payment + total monthly invoice amount)
-            decimal paymentAmount = request.Amount; // Fatura tutarınızı buraya ekleyin ya da başka bir şekilde temin edin.
-            decimal totalPaymentAmount = paymentAmount - totalMonthlyInvoiceAmount;
 
-            // Ödeme tutarını kontrol et
-            if (userAccount.Balance < totalPaymentAmount)
-            {
-                return new ApiResponse<TransferReponse>("Insufficient Balance");
-            }
-            
-            // Ödeme işlemini gerçekleştir
             Payment payment = new Payment
             {
                 UserId = userAccount.UserId,
-                MonthlyInvoiceId = userMonthlyInvoice.MonthlyInvoiceId, // Burada Payments tablosundaki uygun MonthlyInvoiceId'yi atamanız gerekiyor.
+                MonthlyInvoiceId = monthlyInvoice.MonthlyInvoiceId,
                 PaymentDate = DateTime.Now,
-                InvoiceAmount = paymentAmount,
-                Balance = userAccount.Balance - paymentAmount,
-                IsSuccessful = true,
+                InvoiceAmount = request.Amount,
+                Balance = userAccount.Balance - request.Amount,
+
                 Message = "Ödeme başarıyla gerçekleştirildi.",
-                NewBalance = userAccount.Balance - paymentAmount,
-
-
+                NewBalance = userAccount.Balance - request.Amount
             };
+            userAccount.Balance -= request.Amount;
 
-
-            // Payment nesnesini veritabanına ekleyin
             await _unitOfWork.DynamicRepo<Payment>().InsertAsync(payment);
+            await _unitOfWork.DynamicRepo<User>().UpdateAsync(userAccount);
             await _unitOfWork.SaveChangesAsync();
 
-            // Deduct the total monthly invoice amount from the user's balance
-            userAccount.Balance -= totalMonthlyInvoiceAmount;
 
-            // Kullanıcının güncellenmiş cüzdan bakiyesini _userAccountService üzerinden güncelleyin
-            UserAccountRequest userAccountRequest = new UserAccountRequest
-            {
-                UserId = userAccount.UserId,
-                Balance = userAccount.Balance,
-
-                // Diğer güncellenecek alanları da ekleyin
-            };
-
-            // Kullanıcının güncellenmiş cüzdan bakiyesini _userAccountService üzerinden güncelleyin
-            await _userAccountService.Update(userAccount.UserId, userAccountRequest);
-
-            // Sonuçları hazırlayın ve döndürün
             PaymentResponse paymentResponse = new PaymentResponse
             {
                 PaymentId = payment.Id,
-                IsSuccessful = true,
+
                 Message = "Payment Successful",
                 NewBalance = userAccount.Balance,
                 PaymentDate = DateTime.Now
             };
+
 
             return new ApiResponse<TransferReponse>("Payment Successful");
         }
@@ -142,8 +115,8 @@ namespace SP.Business.Concrete
     }
 
 }
-      
-    
+
+
 
 
 

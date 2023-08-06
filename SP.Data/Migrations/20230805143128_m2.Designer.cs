@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SP.Data;
 
@@ -11,9 +12,10 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    partial class SPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230805143128_m2")]
+    partial class m2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,9 +117,6 @@ namespace SP.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
@@ -131,10 +130,6 @@ namespace SP.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.HasIndex("SenderId");
 
                     b.HasIndex("UserId");
 
@@ -322,25 +317,9 @@ namespace SP.Data.Migrations
 
             modelBuilder.Entity("SP.Entity.Messages", b =>
                 {
-                    b.HasOne("SP.Entity.Models.User", "Receiver")
-                        .WithMany()
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("SP.Entity.Models.User", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("SP.Entity.Models.User", null)
-                        .WithMany("MessagesSending")
+                        .WithMany("Messages")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Receiver");
-
-                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("SP.Entity.MonthlyInvoice", b =>
@@ -368,7 +347,7 @@ namespace SP.Data.Migrations
                 {
                     b.Navigation("Apartments");
 
-                    b.Navigation("MessagesSending");
+                    b.Navigation("Messages");
 
                     b.Navigation("Payments");
                 });

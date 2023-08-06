@@ -10,6 +10,7 @@ using SP.Business;
 using SP.Data;
 using SP.Schema;
 using System.Text;
+using SP.Schema.Middleware;
 
 namespace SP.API
 {
@@ -25,6 +26,9 @@ namespace SP.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging();
+
+
             //Mail
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IMailService, MailService>();
@@ -131,6 +135,7 @@ namespace SP.API
             app.UseAuthentication();
             app.UseAuthorization();
 
+           // app.UseMiddleware<BankValidationMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

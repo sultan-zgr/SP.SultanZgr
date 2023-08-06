@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
 using System.Net.Mail;
-    using System.Threading.Tasks;
+using System.Threading.Tasks;
+using System.Timers;
+
 namespace SP.Business
 {
 
@@ -11,18 +13,26 @@ namespace SP.Business
     }
     public class MailService : IMailService
     {
+        private readonly System.Timers.Timer _timer;
+
         private readonly SmtpSettings _smtpSettings;
+
+
 
         public MailService(IOptions<SmtpSettings> smtpSettings)
         {
             _smtpSettings = smtpSettings.Value;
+            _timer = new System.Timers.Timer(86400000); // 24 hours in milliseconds
+            _timer.Elapsed += async (sender, e) => await SendReminderEmail(_smtpSettings.AdminEmail);
+            _timer.Start();
+
         }
 
         public async Task SendReminderEmail(string userEmail)
         {
             try
             {
-                var fromEmail = _smtpSettings.AdminEmail; // Admin email'i kullanmak istediğinizden emin olun
+                var fromEmail = _smtpSettings.AdminEmail;
                 var subject = "Ödeme Hatırlatması";
                 var body = "Ödemenizi yapmayı unutmayınız!";
 
@@ -40,6 +50,6 @@ namespace SP.Business
                 throw new Exception("Error while sending email: " + ex.Message);
             }
         }
-    }
 
+    }
 }

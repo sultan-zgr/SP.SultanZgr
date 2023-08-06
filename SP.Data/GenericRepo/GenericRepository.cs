@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SP.Entity;
 using SP.Entity.Models;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace SP.Data.GenericRepo
         {
             var query = _dbContext.Set<T>().AsQueryable();
             query = includes.Aggregate(query, (current, inc) => current.Include(inc));
+     
             return query.ToListAsync();
         }
         public async Task<T> GetByIdAsync(int id)
@@ -65,6 +67,8 @@ namespace SP.Data.GenericRepo
             return _dbContext.Set<T>().Where(expression).AsQueryable();
         }
 
-       
+      
+
+      
     }
 }

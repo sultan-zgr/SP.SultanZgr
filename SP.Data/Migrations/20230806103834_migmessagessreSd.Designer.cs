@@ -12,8 +12,8 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    [Migration("20230804104412_mig")]
-    partial class mig
+    [Migration("20230806103834_migmessagessreSd")]
+    partial class migmessagessreSd
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,18 +38,21 @@ namespace SP.Data.Migrations
                     b.Property<decimal>("InvoiceAmount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<bool>("IsSuccessful")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("MonthlyInvoiceId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("NewBalance")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("UserAcccountId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserAccountName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -110,22 +113,32 @@ namespace SP.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ApartmentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
-                    b.Property<int>("SenderUserId")
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SenderUserId");
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -195,6 +208,9 @@ namespace SP.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsPayment")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -250,11 +266,11 @@ namespace SP.Data.Migrations
 
             modelBuilder.Entity("SP.Entity.MonthlyInvoice", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MonthlyInvoiceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MonthlyInvoiceId"), 1L, 1);
 
                     b.Property<int>("ApartmentId")
                         .HasColumnType("int");
@@ -265,7 +281,7 @@ namespace SP.Data.Migrations
                     b.Property<decimal>("InvoiceAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Id");
+                    b.HasKey("MonthlyInvoiceId");
 
                     b.HasIndex("ApartmentId");
 
@@ -308,11 +324,23 @@ namespace SP.Data.Migrations
 
             modelBuilder.Entity("SP.Entity.Messages", b =>
                 {
-                    b.HasOne("SP.Entity.Models.User", "Sender")
-                        .WithMany("Messages")
-                        .HasForeignKey("SenderUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("SP.Entity.Models.User", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("SP.Entity.Models.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SP.Entity.Models.User", null)
+                        .WithMany("MessagesSending")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Receiver");
 
                     b.Navigation("Sender");
                 });
@@ -342,7 +370,7 @@ namespace SP.Data.Migrations
                 {
                     b.Navigation("Apartments");
 
-                    b.Navigation("Messages");
+                    b.Navigation("MessagesSending");
 
                     b.Navigation("Payments");
                 });

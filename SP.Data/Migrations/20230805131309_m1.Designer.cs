@@ -12,8 +12,8 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    [Migration("20230804142058_mailkita")]
-    partial class mailkita
+    [Migration("20230805131309_m1")]
+    partial class m1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -256,11 +256,11 @@ namespace SP.Data.Migrations
 
             modelBuilder.Entity("SP.Entity.MonthlyInvoice", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("MonthlyInvoiceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MonthlyInvoiceId"), 1L, 1);
 
                     b.Property<int>("ApartmentId")
                         .HasColumnType("int");
@@ -271,7 +271,7 @@ namespace SP.Data.Migrations
                     b.Property<decimal>("InvoiceAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("Id");
+                    b.HasKey("MonthlyInvoiceId");
 
                     b.HasIndex("ApartmentId");
 

@@ -39,7 +39,7 @@ namespace SP.Business.GenericService
         {
             try
             {
-                var entity = await unitOfWork.DynamicRepo<T>().GetAllWithIncludeAsync();
+                var entity = await unitOfWork.DynamicRepo<T>().GetAllWithIncludeAsync(includes);
                 var mapped = mapper.Map<List<T>, List<TResponse>>(entity);
                 return new ApiResponse<List<TResponse>>(mapped);
             }

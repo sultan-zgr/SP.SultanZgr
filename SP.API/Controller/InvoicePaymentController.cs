@@ -39,6 +39,7 @@ namespace SP.API.Controller
         [HttpPost("pay")]
         public async Task<ApiResponse<TransferReponse>> PayInvoice([FromBody] CashRequest request)
         {
+
             var response = await _service.PayAsync(request);
             return response;
         }

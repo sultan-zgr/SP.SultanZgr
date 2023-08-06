@@ -20,7 +20,7 @@ namespace Patika.Entity.Models
         public int MonthlyInvoiceId { get; set; }
         public decimal Balance { get; set; }  //USERIN CÜZDANI
         public virtual MonthlyInvoice MonthlyInvoice { get; set; }
-        public bool IsSuccessful { get; set; } // Ödeme başarılı mı?
+        public bool IsSuccessful { get; set; } 
         public string Message { get; set; } 
         public decimal NewBalance { get; set; } // Ödeme sonrasında güncellenen cüzdan bakiyesi 
 

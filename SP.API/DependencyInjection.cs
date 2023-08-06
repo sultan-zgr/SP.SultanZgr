@@ -1,5 +1,6 @@
 ﻿
 using SP.API.Controller;
+using SP.API.RabbitMq.Producer;
 using SP.Business.Abstract;
 using SP.Business.Concrete;
 using SP.Business.GenericService;
@@ -36,6 +37,9 @@ namespace SP.API
          
 
             services.AddScoped<IInvoicePaymentService, InvoicePaymentService>();
+
+            services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<IRabbitMqProducer, RabbitMqProducer>();
        
 
            //ervices.AddScoped<IInvoicePaymentService, InvoicePaymentService>();

@@ -72,7 +72,19 @@ public class SPDbContext : DbContext
         modelBuilder.Entity<User>()
             .Property(u => u.Balance)
             .HasColumnType("decimal(18, 2)");
-        //modelBuilder.ApplyConfiguration(new AdminConfiguration());
+        modelBuilder.Entity<Messages>()
+      .HasOne(m => m.Receiver)
+      .WithMany()
+      .HasForeignKey(m => m.ReceiverId)
+      .OnDelete(DeleteBehavior.Restrict);
+
+        // Messages sınıfı için Sender ilişkisini yapılandırma
+        modelBuilder.Entity<Messages>()
+            .HasOne(m => m.Sender)
+            .WithMany()
+            .HasForeignKey(m => m.SenderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
 
         base.OnModelCreating(modelBuilder);
     }

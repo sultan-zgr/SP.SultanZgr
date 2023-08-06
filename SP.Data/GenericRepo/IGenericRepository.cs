@@ -18,6 +18,8 @@ namespace SP.Data.GenericRepo
         Task UpdateAsync(T t);
         Task DeleteAsync(int id);
         IEnumerable<T> Where(Expression<Func<T, bool>> expression);
-       
+  
     }
+
 }
+
