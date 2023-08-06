@@ -35,12 +35,14 @@ namespace SP.API
             services.AddScoped<IUserLogService, UserLogService>();
 
          
-
+          
             services.AddScoped<IInvoicePaymentService, InvoicePaymentService>();
 
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IRabbitMqProducer, RabbitMqProducer>();
        
+
+           
 
            //ervices.AddScoped<IInvoicePaymentService, InvoicePaymentService>();
 

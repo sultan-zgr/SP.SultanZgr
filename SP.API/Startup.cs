@@ -23,20 +23,17 @@ namespace SP.API
 
         public IConfiguration Configuration { get; }
         public static JwtConfig JwtConfig { get; private set; }
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddLogging();
 
-
-            //Mail
+            #region Mail Servis
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IMailService, MailService>();
-
-            // E-posta gönderimi için yapılandırmayı ekleyin.
             services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
+            #endregion
 
-            //...
+            #region Authentication
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -57,13 +54,14 @@ namespace SP.API
                     ClockSkew = TimeSpan.FromMinutes(2)
                 };
             });
+            #endregion
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SP.API", Version = "v1" });
 
-                //TOKEN AUTH BUTONU
+                #region Token Auth Button
                 var securityScheme = new OpenApiSecurityScheme
                 {
                     Name = "Sim Management for IT Company",
@@ -84,12 +82,14 @@ namespace SP.API
                 {securityScheme, new string[] { }}
             });
             });
+            #endregion
 
-            //JWT
+            #region JWT 
             JwtConfig = Configuration.GetSection("JwtConfig").Get<JwtConfig>();
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
+            #endregion
 
-            // DB Bağlantısı 
+            #region DATABASE
             var dbType = Configuration.GetConnectionString("DbType");
             if (dbType == "Sql")  // DEFAULT OLARAK MSSQL ÇALIŞIYOR
             {
@@ -103,21 +103,18 @@ namespace SP.API
                 services.AddDbContext<SPDbContext>(opts =>
                     opts.UseNpgsql(dbConfig));
             }
+            #endregion
 
             //INJECT
             services.AddDependencyInjection();
 
-            //MAPPING
-
+            #region MAPPING
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new MapperConfig());
             });
             services.AddSingleton(config.CreateMapper());
-
-
-
-
+            #endregion
 
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -135,7 +132,7 @@ namespace SP.API
             app.UseAuthentication();
             app.UseAuthorization();
 
-           // app.UseMiddleware<BankValidationMiddleware>();
+            // app.UseMiddleware<BankValidationMiddleware>();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -23,7 +23,7 @@ namespace SP.API.Controller
         //[Authorize(Roles = "Admin")]
         public async Task<ApiResponse<List<ApartmentResponse>>> GetAllApartments()
         {
-            var response = await _service.GetAll("Apartment"); 
+            var response = await _service.GetAll(); 
             return response;
         }
 

@@ -26,7 +26,7 @@ namespace SP.Entity.Models
         public int Status { get; set; }
         public string? TCNo { get; set; }
         public string? VehiclePlateNumber { get; set; }
-
+        
         // Diğer özel alanlarınızı da ekleyebilirsiniz.
 
         // İlişkiler
@@ -40,6 +40,7 @@ namespace SP.Entity.Models
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
+            #region Table Configuration
             // Tablo adı ve anahtar belirleme
             builder.ToTable("Users");
             builder.HasKey(x => x.UserId);
@@ -62,14 +63,15 @@ namespace SP.Entity.Models
 
             // User ile UserRole arasındaki ilişkiyi belirleme
             builder.HasOne(x => x.Role).WithMany().HasForeignKey("RoleId").OnDelete(DeleteBehavior.Restrict);
+            #endregion
 
-            builder.Property(u => u.Balance)
-             .HasColumnType("decimal(18, 2)");
-
-            builder.Property(p=> p.Payments)
-        .HasColumnType("decimal(18, 2)");
+            #region Property Configuration
+            builder.Property(u => u.Balance).HasColumnType("decimal(18, 2)");
+            builder.Property(p => p.Payments).HasColumnType("decimal(18, 2)");
+            #endregion
         }
     }
+
 }
 
 

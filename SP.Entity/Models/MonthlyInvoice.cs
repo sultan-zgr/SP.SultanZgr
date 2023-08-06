@@ -27,8 +27,3 @@ namespace SP.Entity
 
 }
 
-
-
-//KENDİME NOT Şu anki tarihi alın. ''mailjob''
-//MonthlyInvoice koleksiyonundaki her bir faturayı kontrol edin ve ödeme tarihini alın.
-//Şu anki tarihten ödeme tarihini çıkartarak gün sayısını hesaplayın.

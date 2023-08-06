@@ -12,8 +12,8 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    [Migration("20230805144003_m5")]
-    partial class m5
+    [Migration("20230806113213_InitialCreateRole")]
+    partial class InitialCreateRole
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,9 +129,16 @@ namespace SP.Data.Migrations
                     b.Property<int>("SenderId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("ReceiverId");
+
                     b.HasIndex("SenderId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -257,6 +264,23 @@ namespace SP.Data.Migrations
                     b.ToTable("UserLogs");
                 });
 
+            modelBuilder.Entity("SP.Entity.Models.UserRole", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("UserRoles");
+                });
+
             modelBuilder.Entity("SP.Entity.MonthlyInvoice", b =>
                 {
                     b.Property<int>("MonthlyInvoiceId")
@@ -317,11 +341,23 @@ namespace SP.Data.Migrations
 
             modelBuilder.Entity("SP.Entity.Messages", b =>
                 {
-                    b.HasOne("SP.Entity.Models.User", "Sender")
-                        .WithMany("MessagesSending")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("SP.Entity.Models.User", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("SP.Entity.Models.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SP.Entity.Models.User", null)
+                        .WithMany("MessagesSending")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Receiver");
 
                     b.Navigation("Sender");
                 });

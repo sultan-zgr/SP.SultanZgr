@@ -19,13 +19,15 @@ namespace SP.Business.Concrete
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserAccountService _userAccountService;
         private readonly IMonthlyInvoiceService _monthlyInvoiceService;
+        private  readonly IApartmentService _apartmentService;
 
-        public InvoicePaymentService(IMapper mapper, IUnitOfWork unitOfWork, IUserAccountService userAccountService, IMonthlyInvoiceService monthlyInvoiceService)
+        public InvoicePaymentService(IMapper mapper, IUnitOfWork unitOfWork, IUserAccountService userAccountService, IMonthlyInvoiceService monthlyInvoiceService, IApartmentService apartmentService)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _userAccountService = userAccountService;
             _monthlyInvoiceService = monthlyInvoiceService;
+            _apartmentService = apartmentService;
         }
 
 
@@ -59,11 +61,11 @@ namespace SP.Business.Concrete
                 return new ApiResponse<TransferReponse>("Invalid Credit Card Number");
 
             // Validate CVV
-            if (request.CVV == null || request.CVV.Length == 3)
+            if (request.CVV == null || request.CVV.Length != 3)
                 return new ApiResponse<TransferReponse>("Invalid CVV");
 
             // Validate expiration date
-            if (request.ExpirationDate == null || request.ExpirationDate.Length == 5)
+            if (request.ExpirationDate == null || request.ExpirationDate.Length != 5)
                 return new ApiResponse<TransferReponse>("Invalid Expiration Date");
 
 
@@ -80,8 +82,15 @@ namespace SP.Business.Concrete
                 return new ApiResponse<TransferReponse>("User does not have any monthly invoices");
 
 
+            Apartment apartment = await _unitOfWork.DynamicRepo<Apartment>().GetByIdAsync(request.MonthlyInvoiceId);
 
-            Payment payment = new Payment
+
+            if (apartment.IsOccupied == false)
+                return new ApiResponse<TransferReponse>("Daire boş"); 
+
+
+
+                    Payment payment = new Payment
             {
                 UserId = userAccount.UserId,
                 MonthlyInvoiceId = monthlyInvoice.MonthlyInvoiceId,

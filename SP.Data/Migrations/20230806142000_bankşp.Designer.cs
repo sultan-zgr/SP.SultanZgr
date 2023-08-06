@@ -12,8 +12,8 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    [Migration("20230806103834_migmessagessreSd")]
-    partial class migmessagessreSd
+    [Migration("20230806142000_bankşp")]
+    partial class bankşp
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,6 +48,9 @@ namespace SP.Data.Migrations
                     b.Property<int>("MonthlyInvoiceId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("MonthlyInvoiceId1")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("NewBalance")
                         .HasColumnType("decimal(18,2)");
 
@@ -60,6 +63,8 @@ namespace SP.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MonthlyInvoiceId");
+
+                    b.HasIndex("MonthlyInvoiceId1");
 
                     b.HasIndex("UserId");
 
@@ -291,10 +296,14 @@ namespace SP.Data.Migrations
             modelBuilder.Entity("Patika.Entity.Models.Payment", b =>
                 {
                     b.HasOne("SP.Entity.MonthlyInvoice", "MonthlyInvoice")
-                        .WithMany("Payments")
+                        .WithMany()
                         .HasForeignKey("MonthlyInvoiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("SP.Entity.MonthlyInvoice", null)
+                        .WithMany("Payments")
+                        .HasForeignKey("MonthlyInvoiceId1");
 
                     b.HasOne("SP.Entity.Models.User", null)
                         .WithMany("Payments")

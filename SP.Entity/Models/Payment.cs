@@ -13,32 +13,34 @@ namespace Patika.Entity.Models
 {
     public class Payment
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public DateTime PaymentDate { get; set; } // Ödeme tarihi
         public decimal InvoiceAmount { get; set; } // Ödeme miktarı
         public int UserId { get; set; } // Ödeme yapan kullanıcının ID'si
         public int MonthlyInvoiceId { get; set; }
         public decimal Balance { get; set; }  //USERIN CÜZDANI
         public virtual MonthlyInvoice MonthlyInvoice { get; set; }
-        public bool IsSuccessful { get; set; } 
-        public string Message { get; set; } 
+        public bool IsSuccessful { get; set; }
+        public string Message { get; set; }
         public decimal NewBalance { get; set; } // Ödeme sonrasında güncellenen cüzdan bakiyesi 
 
         public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         {
             public void Configure(EntityTypeBuilder<Payment> builder)
             {
-                // ...
+                #region Relationship Configuration
                 builder.HasOne(p => p.MonthlyInvoice)
                     .WithMany(mi => mi.Payments)
                     .HasForeignKey(p => p.MonthlyInvoiceId)
                     .OnDelete(DeleteBehavior.Restrict);
-                // ...
-                builder.Property(p => p.UserId)
-            .IsRequired();
-            }
-        }
+                #endregion
 
+                #region Property Configuration
+                builder.Property(p => p.UserId).IsRequired();
+                builder.Property(p => p.NewBalance).HasColumnType("decimal(18,2)");
+                #endregion
+            }
+
+        }
     }
 }
-

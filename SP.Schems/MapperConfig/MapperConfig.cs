@@ -17,6 +17,7 @@ public class MapperConfig : Profile
 
         CreateMap<User, UserRequest>().ReverseMap();
         CreateMap<User, UserAccountResponse>().ReverseMap();
+        CreateMap<User, UserResponse>().ReverseMap();
 
         CreateMap<ApartmentRequest, Apartment>();
         CreateMap<Apartment, ApartmentResponse>();

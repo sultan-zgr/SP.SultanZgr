@@ -46,6 +46,9 @@ namespace SP.Data.Migrations
                     b.Property<int>("MonthlyInvoiceId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("MonthlyInvoiceId1")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("NewBalance")
                         .HasColumnType("decimal(18,2)");
 
@@ -58,6 +61,8 @@ namespace SP.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MonthlyInvoiceId");
+
+                    b.HasIndex("MonthlyInvoiceId1");
 
                     b.HasIndex("UserId");
 
@@ -289,10 +294,14 @@ namespace SP.Data.Migrations
             modelBuilder.Entity("Patika.Entity.Models.Payment", b =>
                 {
                     b.HasOne("SP.Entity.MonthlyInvoice", "MonthlyInvoice")
-                        .WithMany("Payments")
+                        .WithMany()
                         .HasForeignKey("MonthlyInvoiceId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("SP.Entity.MonthlyInvoice", null)
+                        .WithMany("Payments")
+                        .HasForeignKey("MonthlyInvoiceId1");
 
                     b.HasOne("SP.Entity.Models.User", null)
                         .WithMany("Payments")

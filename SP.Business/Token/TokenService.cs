@@ -144,7 +144,7 @@ namespace SP.Business.Token
             userLogService.Insert(request);
         }
 
-        private string CreateMD5(string input)  //ŞİFRELEME
+        public string CreateMD5(string input)  //ŞİFRELEME
         {
             using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
             {

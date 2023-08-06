@@ -4,7 +4,7 @@
 
 namespace SP.Data.Migrations
 {
-    public partial class m5 : Migration
+    public partial class bankşp : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

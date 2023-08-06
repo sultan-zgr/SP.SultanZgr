@@ -18,7 +18,7 @@ public class SPDbContext : DbContext
     public SPDbContext(DbContextOptions options) : base(options)
     {
     }
-
+    #region DbSets
     public DbSet<User> Users { get; set; }
     public DbSet<UserLog> UserLogs { get; set; }
     public DbSet<Building> Building { get; set; }
@@ -27,13 +27,12 @@ public class SPDbContext : DbContext
     public DbSet<Messages> Messages { get; set; }
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Bank> Banks { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)   //AutoFac library de kullanılabilir.
+    #endregion
+    protected override void OnModelCreating(ModelBuilder modelBuilder)  
     {
         //  DbContext'in Assembly
         var assembly = Assembly.GetExecutingAssembly();
 
-        // IEntityTypeConfiguration<T>
         var configurationTypes = assembly.GetTypes()
             .Where(t => t.IsClass && !t.IsAbstract &&
                         t.GetInterfaces().Any(i =>
@@ -41,7 +40,7 @@ public class SPDbContext : DbContext
                             i.GetGenericTypeDefinition() == typeof(IEntityTypeConfiguration<>)))
             .ToList();
 
-        // config modelbuilder ekle
+ 
         foreach (var configurationType in configurationTypes)
         {
             dynamic configuration = Activator.CreateInstance(configurationType);
@@ -54,9 +53,8 @@ public class SPDbContext : DbContext
        .ToList();
 
 
+        #region Payment Entity Configuration
         modelBuilder.Entity<Payment>().Property(p => p.InvoiceAmount).HasColumnType("decimal(18,2)");
-        modelBuilder.Entity<MonthlyInvoice>().Property(mi => mi.InvoiceAmount).HasColumnType("decimal(18,2)");
-
 
         modelBuilder.Entity<Payment>()
             .HasOne(p => p.MonthlyInvoice)
@@ -66,27 +64,41 @@ public class SPDbContext : DbContext
 
         modelBuilder.Entity<Payment>()
             .Property(p => p.Balance)
-            .HasColumnType("decimal(18, 2)"); // Example: 18 digits with 2 decimal places
-
-        // Configure the 'Balance' property of the 'User' entity
-        modelBuilder.Entity<User>()
-            .Property(u => u.Balance)
             .HasColumnType("decimal(18, 2)");
-        modelBuilder.Entity<Messages>()
-      .HasOne(m => m.Receiver)
-      .WithMany()
-      .HasForeignKey(m => m.ReceiverId)
-      .OnDelete(DeleteBehavior.Restrict);
+        #endregion
 
-        // Messages sınıfı için Sender ilişkisini yapılandırma
+        // Region for MonthlyInvoice entity configuration
+        #region MonthlyInvoice Entity Configuration
+        modelBuilder.Entity<MonthlyInvoice>().Property(mi => mi.InvoiceAmount).HasColumnType("decimal(18,2)");
+        modelBuilder.Entity<Payment>()
+            .HasOne(p => p.MonthlyInvoice)
+            .WithMany()
+            .HasForeignKey(p => p.MonthlyInvoiceId)
+            .OnDelete(DeleteBehavior.NoAction);
+        #endregion
+
+        // Region for User entity configuration
+        #region User Entity Configuration
+        modelBuilder.Entity<User>().Property(u => u.Balance).HasColumnType("decimal(18, 2)");
+        #endregion
+
+        // Region for Messages entity configuration
+        #region Messages Entity Configuration
+        modelBuilder.Entity<Messages>()
+            .HasOne(m => m.Receiver)
+            .WithMany()
+            .HasForeignKey(m => m.ReceiverId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         modelBuilder.Entity<Messages>()
             .HasOne(m => m.Sender)
             .WithMany()
             .HasForeignKey(m => m.SenderId)
             .OnDelete(DeleteBehavior.Restrict);
+        #endregion
+        
 
 
         base.OnModelCreating(modelBuilder);
     }
 }
-
