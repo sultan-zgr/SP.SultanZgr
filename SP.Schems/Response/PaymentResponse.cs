@@ -9,10 +9,10 @@ namespace SP.Schema.Response
 {
     public class PaymentResponse
     {
-        public int PaymentId { get; set; } // Ödeme işlemine atanan kimlik numarası
+        public int PaymentId { get; set; } 
        
-        public string Message { get; set; } // Ödeme işlemiyle ilgili bir mesaj (isteğe bağlı, hata durumunda kullanılabilir)
-        public decimal NewBalance { get; set; } // Ödeme sonrasında güncellenen cüzdan bakiyesi (isteğe bağlı)
+        public string Message { get; set; } 
+        public decimal NewBalance { get; set; } 
         public DateTime PaymentDate { get; set; }
       
     }

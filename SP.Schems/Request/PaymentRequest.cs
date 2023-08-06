@@ -11,12 +11,12 @@ namespace SP.Schema.Request
 {
     public class PaymentRequest
     {
-        public int UserId { get; set; } // Ödeme yapan kullanıcının ID'si
+        public int UserId { get; set; } 
         public decimal Wallet { get; set; }
-        public DateTime PaymentDate { get; set; } // Ödeme tarihi
-        public decimal InvoiceAmount { get; set; } // Ödeme miktarı
+        public DateTime PaymentDate { get; set; }
+        public decimal InvoiceAmount { get; set; }
         public int MonthlyInvoiceId { get; set; }
-       // public Bank Bank { get; set; }
+
 
     }
 }

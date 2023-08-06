@@ -8,7 +8,7 @@ namespace SP.Schema.Response
 {
     public class BankResponse
     {
-        public bool IsSuccessful { get; set; } // İşlem başarılı mı?
-        public string Message { get; set; } // İşlemle ilgili mesaj
+        public bool IsSuccessful { get; set; } 
+        public string Message { get; set; } 
     }
 }

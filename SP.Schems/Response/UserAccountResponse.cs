@@ -9,8 +9,8 @@ namespace SP.Schema.Response
     public class UserAccountResponse
     {
         public int UserId { get; set; }
-        public decimal Balance { get; set; }  //USERIN CÜZDANI
+        public decimal Balance { get; set; } 
         public virtual List<PaymentResponse> Payments { get; set; }
-        public int MonthlyInvoiceId { get; set; } // Kullanıcının aylık faturaları
+        public int MonthlyInvoiceId { get; set; } 
     }
 }
