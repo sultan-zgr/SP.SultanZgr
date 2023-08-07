@@ -56,6 +56,7 @@ namespace SP.API.Controller
             var response = await _service.GetAll();
             return Ok(response);
         }
+
         [HttpGet("{id}")]
         public async Task<ApiResponse> UpdateUser(int id, [FromBody] UserRequest request)
         {

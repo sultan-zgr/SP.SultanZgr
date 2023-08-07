@@ -12,7 +12,7 @@ using System.Security.Claims;
 
 namespace SP.API.Controller
 {
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class MonthlyInvoiceController : ControllerBase
@@ -28,6 +28,7 @@ namespace SP.API.Controller
     
         public async Task<ApiResponse<List<MonthlyInvoiceResponse>>>GetAllMonthlyInvoices()
         {
+           
             var response = await _monthlyInvoiceService.GetAll();
             return response;
         }
@@ -66,7 +67,22 @@ namespace SP.API.Controller
             var response = await _monthlyInvoiceService.Delete(id);
             return response;
         }
-    
+        //public async Task<MonthlyBalance> GetMonthlyBalance(Months month)
+        //{
+        //    var invoices = await _monthlyInvoiceRepository.GetInvoicesByMonth(month);
+
+        //    decimal totalDebt = invoices.Where(i => i.InvoiceAmount < 0).Sum(i => i.InvoiceAmount);
+        //    decimal totalCredit = invoices.Where(i => i.InvoiceAmount > 0).Sum(i => i.InvoiceAmount);
+
+        //    return new MonthlyBalance
+        //    {
+        //        Month = month,
+        //        TotalDebt = totalDebt,
+        //        TotalCredit = totalCredit
+        //    };
+        //}
+
+
     }
 }
 
