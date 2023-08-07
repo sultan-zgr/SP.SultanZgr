@@ -1,4 +1,5 @@
-﻿using SP.Schema.Response;
+﻿using SP.Base.Enums.Months;
+using SP.Schema.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace SP.Schema.Request
         public int UserId { get; set; }
         public decimal InvoiceAmount { get; set; }
         public DateTime Date { get; set; }
-  
+        public Months MonthlyPayment { get; set; }
+
 
     }
 }

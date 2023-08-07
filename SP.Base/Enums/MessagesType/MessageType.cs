@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SP.Base.InvoiceType
+namespace SP.Base.Enums.MessagesType
 {
-    public enum InvoiceType
+    public enum MessageType
     {
-        Water =1,
-        Electric =2,
-        NaturalGas=3
     }
 }

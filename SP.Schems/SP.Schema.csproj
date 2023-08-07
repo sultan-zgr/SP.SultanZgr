@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SP.Base\SP.Base.csproj" />
     <ProjectReference Include="..\SP.Entity\SP.Entity.csproj" />
   </ItemGroup>
 

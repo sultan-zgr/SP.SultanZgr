@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SP.Base.BaseResponse;
+using SP.Base.Enums.Months;
 using SP.Business.Abstract;
 using SP.Business.Concrete;
 using SP.Schema.Request;
@@ -35,6 +36,7 @@ namespace SP.API.Controller
     
         public async Task<ApiResponse<MonthlyInvoiceResponse>> GetMonthlyInvoiceById(int id)
         {
+
             var response = await _monthlyInvoiceService.GetById(id);
             return response;
         }
@@ -43,6 +45,7 @@ namespace SP.API.Controller
      
         public async Task<ApiResponse> AddMonthlyInvoice([FromBody] MonthlyInvoiceRequest request)
         {
+            request.MonthlyPayment = Months.August;  // Sabit olarak eklendi
             var response = await _monthlyInvoiceService.Insert(request);
             return response;
         }
@@ -51,6 +54,7 @@ namespace SP.API.Controller
 
         public async Task<ApiResponse> UpdateMonthlyInvoice(int id, [FromBody] MonthlyInvoiceRequest request)
         {
+            request.MonthlyPayment = Months.August;
             var response = await _monthlyInvoiceService.Update(id, request);
             return response;
         }
