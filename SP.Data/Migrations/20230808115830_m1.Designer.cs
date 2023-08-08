@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SP.Data;
 
@@ -11,9 +12,10 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    partial class SPDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230808115830_m1")]
+    partial class m1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,9 +277,6 @@ namespace SP.Data.Migrations
 
                     b.Property<decimal>("InvoiceAmount")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("InvoiceStatus")
-                        .HasColumnType("bit");
 
                     b.Property<int>("Months")
                         .HasColumnType("int");

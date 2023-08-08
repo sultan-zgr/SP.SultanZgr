@@ -67,8 +67,9 @@ namespace SP.Data.GenericRepo
             return _dbContext.Set<T>().Where(expression).AsQueryable();
         }
 
-      
-
-      
+        public async Task<T> FindAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbContext.Set<T>().SingleOrDefaultAsync(predicate);
+        }
     }
 }

@@ -45,7 +45,7 @@ namespace SP.Entity.Models
             builder.ToTable("Users");
             builder.HasKey(x => x.UserId);
 
-            // Sütun özellikleri ve ilişkilerin belirlenmesi
+
             builder.Property(x => x.FullName).IsRequired().HasMaxLength(100);
             builder.Property(x => x.Email).IsRequired().HasMaxLength(100);
             builder.Property(x => x.UserName).IsRequired().HasMaxLength(50);
@@ -55,13 +55,13 @@ namespace SP.Entity.Models
             builder.Property(x => x.TCNo).IsRequired().HasMaxLength(11);
             builder.Property(x => x.VehiclePlateNumber).HasMaxLength(20);
 
-            // İlişkiler
+         
             builder.HasMany(x => x.MessagesSending).WithOne().HasForeignKey("SenderId").OnDelete(DeleteBehavior.NoAction);
-            //builder.HasMany(x => x.MessagesReceivng).WithOne().HasForeignKey("ReceiverId").OnDelete(DeleteBehavior.NoAction);
+          
             builder.HasMany(x => x.Payments).WithOne().HasForeignKey("UserId").OnDelete(DeleteBehavior.Restrict);
             builder.HasMany(x => x.Apartments).WithOne().HasForeignKey("UserId").OnDelete(DeleteBehavior.Restrict);
 
-            // User ile UserRole arasındaki ilişkiyi belirleme
+  
             builder.HasOne(x => x.Role).WithMany().HasForeignKey("RoleId").OnDelete(DeleteBehavior.Restrict);
             #endregion
 

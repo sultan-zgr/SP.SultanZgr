@@ -20,6 +20,7 @@ namespace SP.Business.Concrete
         private readonly IUserAccountService _userAccountService;
         private readonly IMonthlyInvoiceService _monthlyInvoiceService;
         private  readonly IApartmentService _apartmentService;
+    
 
         public InvoicePaymentService(IMapper mapper, IUnitOfWork unitOfWork, IUserAccountService userAccountService, IMonthlyInvoiceService monthlyInvoiceService, IApartmentService apartmentService)
         {
@@ -48,6 +49,11 @@ namespace SP.Business.Concrete
         }
 
         public Task<ApiResponse<PaymentResponse>> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResponse<bool>> IsPaidAsync(CashRequest request)
         {
             throw new NotImplementedException();
         }
@@ -81,42 +87,35 @@ namespace SP.Business.Concrete
             if (monthlyInvoice == null)
                 return new ApiResponse<TransferReponse>("User does not have any monthly invoices");
 
-
-            Apartment apartment = await _unitOfWork.DynamicRepo<Apartment>().GetByIdAsync(request.MonthlyInvoiceId);
-
-
-            if (apartment.IsOccupied == false)
-                return new ApiResponse<TransferReponse>("Daire boş"); 
-
-
-
-                    Payment payment = new Payment
+            decimal invoiceAmount = monthlyInvoice.InvoiceAmount;
+            Payment payment = new Payment
             {
                 UserId = userAccount.UserId,
                 MonthlyInvoiceId = monthlyInvoice.MonthlyInvoiceId,
                 PaymentDate = DateTime.Now,
-                InvoiceAmount = request.Amount,
-                Balance = userAccount.Balance - request.Amount,
+                InvoiceAmount = invoiceAmount,
+                Balance = userAccount.Balance - invoiceAmount,
 
                 Message = "Payment successfully completed",
-                NewBalance = userAccount.Balance - request.Amount
+                NewBalance = userAccount.Balance - invoiceAmount
             };
-            userAccount.Balance -= request.Amount;
+            userAccount.Balance -= invoiceAmount;
 
             await _unitOfWork.DynamicRepo<Payment>().InsertAsync(payment);
             await _unitOfWork.DynamicRepo<User>().UpdateAsync(userAccount);
+            monthlyInvoice.InvoiceStatus = true;
             await _unitOfWork.SaveChangesAsync();
 
 
             PaymentResponse paymentResponse = new PaymentResponse
             {
                 PaymentId = payment.Id,
-
                 Message = "Payment Successful",
                 NewBalance = userAccount.Balance,
                 PaymentDate = DateTime.Now
             };
 
+      
 
             return new ApiResponse<TransferReponse>("Payment Successful");
         }

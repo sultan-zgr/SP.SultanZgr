@@ -26,6 +26,20 @@ public class UserService : GenericService<User, UserRequest, UserResponse>, IUse
         _unitOfWork = unitOfWork;
     }
 
+    public async Task<bool> CheckUserExists(int userId)
+    {
+        try
+        {
+            var user = await _unitOfWork.DynamicRepo<User>().FindAsync(u => u.UserId == userId);
+            return user != null;
+        }
+        catch (Exception ex)
+        { 
+            return false;
+        }
+    }
+
+
     public async Task<ApiResponse<List<User>>> GetUsersWithPendingPayments()
     {
         try
@@ -38,7 +52,7 @@ public class UserService : GenericService<User, UserRequest, UserResponse>, IUse
         catch (Exception ex)
         {
 
-            throw new Exception("Error while fetching users with pending payments: " + ex.Message);
+            throw new Exception("Error while fetching users with pending payments: ");
         }
     }
 }

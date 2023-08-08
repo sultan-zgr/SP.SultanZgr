@@ -70,11 +70,7 @@ public class SPDbContext : DbContext
         // Region for MonthlyInvoice entity configuration
         #region MonthlyInvoice Entity Configuration
         modelBuilder.Entity<MonthlyInvoice>().Property(mi => mi.InvoiceAmount).HasColumnType("decimal(18,2)");
-        modelBuilder.Entity<Payment>()
-            .HasOne(p => p.MonthlyInvoice)
-            .WithMany()
-            .HasForeignKey(p => p.MonthlyInvoiceId)
-            .OnDelete(DeleteBehavior.NoAction);
+  
         #endregion
 
         // Region for User entity configuration

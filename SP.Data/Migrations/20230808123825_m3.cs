@@ -4,7 +4,7 @@
 
 namespace SP.Data.Migrations
 {
-    public partial class FinalMigration : Migration
+    public partial class m3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

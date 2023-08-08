@@ -15,9 +15,8 @@ namespace SP.Business.Abstract
     public interface IMessageService : IGenericService<Messages, MessagesRequest, MessagesResponse>
     {
         Task<ApiResponse<MessagesResponse>> UserSendMessageAsync(MessagesRequest request);
-     
-
-
+        Task<ApiResponse<List<MessagesResponse>>> GetAllMessages();
+        Task UpdateMessageStatusAsync(Messages message);
     }
 
 }

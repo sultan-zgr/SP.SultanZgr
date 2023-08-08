@@ -9,5 +9,7 @@ namespace SP.Schema.Response
     public class TransferReponse
     {
         public int UserId { get; set; }
+
     }
 }
+

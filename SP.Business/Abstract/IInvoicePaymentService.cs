@@ -18,5 +18,6 @@ namespace SP.Business.Abstract
         Task<ApiResponse<List<PaymentResponse>>> GetAllAsync();
         Task<ApiResponse<PaymentResponse>> GetByIdAsync(int id);
         Task<ApiResponse<TransferReponse>> PayAsync(CashRequest request);
+        Task<ApiResponse<bool>> IsPaidAsync (CashRequest request);
     }
 }

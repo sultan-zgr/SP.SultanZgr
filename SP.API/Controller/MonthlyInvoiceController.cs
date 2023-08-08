@@ -18,23 +18,25 @@ namespace SP.API.Controller
     public class MonthlyInvoiceController : ControllerBase
     {
         private readonly IMonthlyInvoiceService _monthlyInvoiceService;
+        private readonly IUserService _userService;
 
-        public MonthlyInvoiceController(IMonthlyInvoiceService monthlyInvoiceService)
+        public MonthlyInvoiceController(IMonthlyInvoiceService monthlyInvoiceService, IUserService userService)
         {
             _monthlyInvoiceService = monthlyInvoiceService;
+            _userService = userService;
         }
 
         [HttpGet]
-    
-        public async Task<ApiResponse<List<MonthlyInvoiceResponse>>>GetAllMonthlyInvoices()
+
+        public async Task<ApiResponse<List<MonthlyInvoiceResponse>>> GetAllMonthlyInvoices()
         {
-           
+
             var response = await _monthlyInvoiceService.GetAll();
             return response;
         }
 
         [HttpGet("{id}")]
-    
+
         public async Task<ApiResponse<MonthlyInvoiceResponse>> GetMonthlyInvoiceById(int id)
         {
 
@@ -43,20 +45,33 @@ namespace SP.API.Controller
         }
 
         [HttpPost]
-     
-        public async Task<ApiResponse> AddMonthlyInvoice([FromBody] MonthlyInvoiceRequest request)
+        public async Task<ApiResponse<MonthlyInvoiceResponse>> AddMonthlyInvoiceByMonth([FromBody] MonthlyInvoiceRequest request)
         {
-            request.MonthlyPayment = Months.August;  // Sabit olarak eklendi
-            var response = await _monthlyInvoiceService.Insert(request);
-            return response;
+           // Kullanıcı veritabanımda kayıtlı mı?
+                var userExists = await _userService.CheckUserExists(request.UserId);
+
+                if (!userExists)
+                {
+                    return new ApiResponse<MonthlyInvoiceResponse>("Kullanıcı bulunamadı.");
+                }
+
+                var response = await _monthlyInvoiceService.AddMonthlyInvoiceByMonth(request, request.Months);
+                return response;
         }
+
+
 
         [HttpPut("{id}")]
 
-        public async Task<ApiResponse> UpdateMonthlyInvoice(int id, [FromBody] MonthlyInvoiceRequest request)
+        public async Task<ApiResponse<MonthlyInvoiceResponse>> UpdateMonthlyInvoiceByMonth(int id, [FromBody] MonthlyInvoiceRequest request)
         {
-            request.MonthlyPayment = Months.August;
-            var response = await _monthlyInvoiceService.Update(id, request);
+            var userExists = await _userService.CheckUserExists(request.UserId);
+
+            if (!userExists)
+            {
+                return new ApiResponse<MonthlyInvoiceResponse>("Kullanıcı bulunamadı.");
+            }
+            var response = await _monthlyInvoiceService.UpdateMonthlyInvoiceByMonth(id, request, request.Months);
             return response;
         }
 
@@ -67,20 +82,7 @@ namespace SP.API.Controller
             var response = await _monthlyInvoiceService.Delete(id);
             return response;
         }
-        //public async Task<MonthlyBalance> GetMonthlyBalance(Months month)
-        //{
-        //    var invoices = await _monthlyInvoiceRepository.GetInvoicesByMonth(month);
 
-        //    decimal totalDebt = invoices.Where(i => i.InvoiceAmount < 0).Sum(i => i.InvoiceAmount);
-        //    decimal totalCredit = invoices.Where(i => i.InvoiceAmount > 0).Sum(i => i.InvoiceAmount);
-
-        //    return new MonthlyBalance
-        //    {
-        //        Month = month,
-        //        TotalDebt = totalDebt,
-        //        TotalCredit = totalCredit
-        //    };
-        //}
 
 
     }

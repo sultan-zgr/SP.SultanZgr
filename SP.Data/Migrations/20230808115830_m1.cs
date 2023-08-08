@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SP.Data.Migrations
 {
-    public partial class mig1 : Migration
+    public partial class m1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,21 +36,6 @@ namespace SP.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Building", x => x.BuildingId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MonthlyInvoices",
-                columns: table => new
-                {
-                    MonthlyInvoiceId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    InvoiceAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MonthlyInvoices", x => x.MonthlyInvoiceId);
                 });
 
             migrationBuilder.CreateTable(
@@ -158,6 +143,28 @@ namespace SP.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MonthlyInvoices",
+                columns: table => new
+                {
+                    MonthlyInvoiceId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    InvoiceAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Months = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MonthlyInvoices", x => x.MonthlyInvoiceId);
+                    table.ForeignKey(
+                        name: "FK_MonthlyInvoices_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Payments",
                 columns: table => new
                 {
@@ -170,8 +177,7 @@ namespace SP.Data.Migrations
                     Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsSuccessful = table.Column<bool>(type: "bit", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NewBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    MonthlyInvoiceId1 = table.Column<int>(type: "int", nullable: true)
+                    NewBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -180,12 +186,8 @@ namespace SP.Data.Migrations
                         name: "FK_Payments_MonthlyInvoices_MonthlyInvoiceId",
                         column: x => x.MonthlyInvoiceId,
                         principalTable: "MonthlyInvoices",
-                        principalColumn: "MonthlyInvoiceId");
-                    table.ForeignKey(
-                        name: "FK_Payments_MonthlyInvoices_MonthlyInvoiceId1",
-                        column: x => x.MonthlyInvoiceId1,
-                        principalTable: "MonthlyInvoices",
-                        principalColumn: "MonthlyInvoiceId");
+                        principalColumn: "MonthlyInvoiceId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Payments_Users_UserId",
                         column: x => x.UserId,
@@ -220,14 +222,14 @@ namespace SP.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MonthlyInvoices_UserId",
+                table: "MonthlyInvoices",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Payments_MonthlyInvoiceId",
                 table: "Payments",
                 column: "MonthlyInvoiceId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Payments_MonthlyInvoiceId1",
-                table: "Payments",
-                column: "MonthlyInvoiceId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_UserId",

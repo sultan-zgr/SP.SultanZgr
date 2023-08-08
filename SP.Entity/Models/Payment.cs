@@ -24,23 +24,8 @@ namespace Patika.Entity.Models
         public string Message { get; set; }
         public decimal NewBalance { get; set; } // Ödeme sonrasında güncellenen cüzdan bakiyesi 
 
-        public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
-        {
-            public void Configure(EntityTypeBuilder<Payment> builder)
-            {
-                #region Relationship Configuration
-                builder.HasOne(p => p.MonthlyInvoice)
-                    .WithMany(mi => mi.Payments)
-                    .HasForeignKey(p => p.MonthlyInvoiceId)
-                    .OnDelete(DeleteBehavior.Restrict);
-                #endregion
-
-                #region Property Configuration
-                builder.Property(p => p.UserId).IsRequired();
-                builder.Property(p => p.NewBalance).HasColumnType("decimal(18,2)");
-                #endregion
-            }
+      
 
         }
     }
-}
+

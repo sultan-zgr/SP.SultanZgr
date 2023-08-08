@@ -1,4 +1,5 @@
-﻿using SP.Entity.Models;
+﻿using SP.Base.Enums.MessagesType;
+using SP.Entity.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SP.Entity
@@ -11,13 +12,12 @@ namespace SP.Entity
         public string Content { get; set; }
         public bool IsRead { get; set; }
         public DateTime Date { get; set; }
-        //public int ApartmentId { get; set; } // Change this to ApartmentI
         public User Sender { get; set; }
-
         public User Receiver { get; set; }
-
+        public MessageStatus MessageStatus { get; set; }
 
 
     }
+
 }
 

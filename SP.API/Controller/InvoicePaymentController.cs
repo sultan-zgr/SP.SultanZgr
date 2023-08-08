@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Patika.Entity.Models;
 using SP.Base.BaseResponse;
-using SP.Base.Enums.InvoiceType;
 using SP.Business.Abstract;
 using SP.Data.UnitOfWork;
 using SP.Entity.Models;
@@ -45,8 +44,6 @@ namespace SP.API.Controller
         [Authorize(Roles = "admin,user")]
         public async Task<ApiResponse<TransferReponse>> PayInvoice([FromBody] CashRequest request)
         {
-           
-
             var response = await _service.PayAsync(request);
             return response;
         }

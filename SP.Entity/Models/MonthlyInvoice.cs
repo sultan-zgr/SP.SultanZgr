@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using SP.Entity.Models;
 using SP.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
+using SP.Base.Enums.Months;
 
 namespace SP.Entity
 {
@@ -17,8 +18,11 @@ namespace SP.Entity
         public int MonthlyInvoiceId { get; set; }
         public decimal InvoiceAmount { get; set; }
         public DateTime Date { get; set; }
-        public int UserId { get; set; }
+        public int UserId { get; set; }  
+        public bool InvoiceStatus { get; set; }
+        public virtual User User { get; set; }  
         public virtual ICollection<Payment> Payments { get; set; }
+        public Months Months { get; set; }  
     }
 
 

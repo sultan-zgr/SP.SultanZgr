@@ -17,6 +17,7 @@ namespace SP.Data.GenericRepo
         Task<T> InsertAsync(T t);
         Task UpdateAsync(T t);
         Task DeleteAsync(int id);
+        Task<T> FindAsync(Expression<Func<T, bool>> predicate);
         IEnumerable<T> Where(Expression<Func<T, bool>> expression);
   
     }
