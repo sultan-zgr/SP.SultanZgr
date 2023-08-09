@@ -44,6 +44,7 @@ namespace SP.Data.GenericRepo
         {
             _dbContext.Set<T>().Update(t);
             await _dbContext.SaveChangesAsync();
+
         }
 
         public async Task DeleteAsync(int id)

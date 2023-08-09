@@ -22,27 +22,14 @@ namespace SP.Business.Concrete
 
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMessageService _messageService;
-        public MessageService(IMapper mapper, IUnitOfWork unitOfWork, IMessageService messageService) : base(mapper, unitOfWork)
+        public MessageService(IMapper mapper, IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _messageService = messageService;
         }
 
 
-        public async Task UpdateMessageStatusAsync(Messages message)
-        {
-            if (message.MessageStatus == MessageStatus.New)
-            {
-                TimeSpan timeSinceSent = DateTime.Now - message.Date;
-                if (timeSinceSent.TotalMinutes >= 5) // 5 dakika geçtiyse
-                {
-                    message.MessageStatus = MessageStatus.Unread;
-                }
-            }
-        }
-            public async Task<ApiResponse<MessagesResponse>> UserSendMessageAsync(MessagesRequest request)
+        public async Task<ApiResponse<MessagesResponse>> UserSendMessageAsync(MessagesRequest request)
         {
             try
             {
@@ -60,13 +47,12 @@ namespace SP.Business.Concrete
                     SenderId = senderUser.UserId,
                     ReceiverId = receiverUser.UserId,  //Alıcı Admin id = 1 
                     Content = request.Content,
-                    IsRead = false,
                     Date = DateTime.Now,
-                    MessageStatus = MessageStatus.New
+                    MessageStatus = MessageStatus.Unread
                 };
-                await UpdateMessageStatusAsync(message);   //MESAJ GÖNDERELİ 5 DAKİKAYI GEÇTİYSE UNREAD OLARAK DEĞİŞECEK
 
-                var response = await _messageService.UserSendMessageAsync(request);
+
+                await _unitOfWork.DynamicRepo<Messages>().InsertAsync(message);
                 await _unitOfWork.SaveChangesAsync();
 
                 return new ApiResponse<MessagesResponse>("Your message has been delivered..");
@@ -80,23 +66,36 @@ namespace SP.Business.Concrete
         }
         public async Task<ApiResponse<MessagesResponse>> GetMessage(int id)
         {
-            var response = await _messageService.GetById(id);
-            if (response.Success)
+            try
             {
-                var message = response.Response;
+                var message = await _unitOfWork.DynamicRepo<Messages>().GetByIdAsync(id);
 
-                    if (message.MessageStatus == MessageStatus.Unread) 
-                    {
-                        message.MessageStatus = MessageStatus.Read; 
-                        await _unitOfWork.SaveChangesAsync(); 
-                    }
+                if (message == null)
+                {
+                    return new ApiResponse<MessagesResponse>("Message not found");
                 }
-            
-            return response;
+
+                if (message.MessageStatus == MessageStatus.Read)  // Check if the message is already read
+                {
+                    return new ApiResponse<MessagesResponse>("Message has already been read");
+                }
+
+                message.MessageStatus = MessageStatus.Read;  // Set the message status to "Read"
+                await _unitOfWork.DynamicRepo<Messages>().UpdateAsync(message);
+                await _unitOfWork.SaveChangesAsync();
+
+                return new ApiResponse<MessagesResponse>("Message marked as read");
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<MessagesResponse>("ERROR: " + ex.Message);
+            }
         }
+
+
         public async Task<ApiResponse<List<MessagesResponse>>> GetAllMessages()
         {
-            var response = await _messageService.GetAll();
+            var response = await GetAll();
             return response;
         }
 

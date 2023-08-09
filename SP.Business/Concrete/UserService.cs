@@ -38,23 +38,10 @@ public class UserService : GenericService<User, UserRequest, UserResponse>, IUse
             return false;
         }
     }
+  
 
 
-    public async Task<ApiResponse<List<User>>> GetUsersWithPendingPayments()
-    {
-        try
-        {
-            IQueryable<User> usersWithPendingPayments = _unitOfWork.DynamicRepo<User>().Where(m => !m.IsPayment).AsQueryable();
-            List<User> userList = await usersWithPendingPayments.ToListAsync();
-            return new ApiResponse<List<User>>(data: userList);
 
-        }
-        catch (Exception ex)
-        {
-
-            throw new Exception("Error while fetching users with pending payments: ");
-        }
-    }
 }
 
-   
+

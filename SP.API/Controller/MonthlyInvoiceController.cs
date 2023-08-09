@@ -5,6 +5,7 @@ using SP.Base.BaseResponse;
 using SP.Base.Enums.Months;
 using SP.Business.Abstract;
 using SP.Business.Concrete;
+using SP.Schema;
 using SP.Schema.Request;
 using SP.Schema.Response;
 using System.Data;
@@ -83,7 +84,13 @@ namespace SP.API.Controller
             return response;
         }
 
+        [HttpGet("unpaid-users")]
+        public async Task<ActionResult<ApiResponse<List<MonthlyInvoiceResponse>>>> GetUnpaidUsers()
+        {
+            var unpaidUsersResponse = await _monthlyInvoiceService.GetUsersWithUnpaidInvoicesAsync(); // Bu metodu IUserService içine eklemeniz gerekiyor.
 
+            return Ok(unpaidUsersResponse);
+        }
 
     }
 }

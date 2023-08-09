@@ -19,8 +19,8 @@ namespace SP.Business.Concrete
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserAccountService _userAccountService;
         private readonly IMonthlyInvoiceService _monthlyInvoiceService;
-        private  readonly IApartmentService _apartmentService;
-    
+        private readonly IApartmentService _apartmentService;
+
 
         public InvoicePaymentService(IMapper mapper, IUnitOfWork unitOfWork, IUserAccountService userAccountService, IMonthlyInvoiceService monthlyInvoiceService, IApartmentService apartmentService)
         {
@@ -76,13 +76,13 @@ namespace SP.Business.Concrete
 
 
             User userAccount = await _unitOfWork.DynamicRepo<User>().GetByIdAsync(request.UserId);
-
             if (userAccount == null)
                 return new ApiResponse<TransferReponse>("Invalid User Account");
 
 
             MonthlyInvoice monthlyInvoice = await _unitOfWork.DynamicRepo<MonthlyInvoice>().GetByIdAsync(request.MonthlyInvoiceId);
-
+            if (monthlyInvoice.PaymentStatus == true) // Ödeme zaten yapıldıysa
+                return new ApiResponse<TransferReponse>("Invoice has already been paid.");
 
             if (monthlyInvoice == null)
                 return new ApiResponse<TransferReponse>("User does not have any monthly invoices");
@@ -95,7 +95,7 @@ namespace SP.Business.Concrete
                 PaymentDate = DateTime.Now,
                 InvoiceAmount = invoiceAmount,
                 Balance = userAccount.Balance - invoiceAmount,
-
+                IsSuccessful = true,
                 Message = "Payment successfully completed",
                 NewBalance = userAccount.Balance - invoiceAmount
             };
@@ -103,7 +103,7 @@ namespace SP.Business.Concrete
 
             await _unitOfWork.DynamicRepo<Payment>().InsertAsync(payment);
             await _unitOfWork.DynamicRepo<User>().UpdateAsync(userAccount);
-            monthlyInvoice.InvoiceStatus = true;
+            monthlyInvoice.PaymentStatus = true;
             await _unitOfWork.SaveChangesAsync();
 
 
@@ -115,7 +115,7 @@ namespace SP.Business.Concrete
                 PaymentDate = DateTime.Now
             };
 
-      
+
 
             return new ApiResponse<TransferReponse>("Payment Successful");
         }

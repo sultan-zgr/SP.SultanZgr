@@ -16,7 +16,7 @@ namespace SP.Business.Abstract
     {
         Task<ApiResponse<MessagesResponse>> UserSendMessageAsync(MessagesRequest request);
         Task<ApiResponse<List<MessagesResponse>>> GetAllMessages();
-        Task UpdateMessageStatusAsync(Messages message);
+        Task<ApiResponse<MessagesResponse>> GetMessage(int id);
     }
 
 }

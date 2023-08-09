@@ -2,8 +2,7 @@
 {
     public enum MessageStatus
     {
-        New,
-        Read,
-        Unread
+       Unread,
+       Read
     }
 }

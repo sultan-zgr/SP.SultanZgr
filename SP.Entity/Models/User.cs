@@ -33,7 +33,6 @@ namespace SP.Entity.Models
         public List<Messages> MessagesSending { get; set; } // Kullanıcının gönderdiği mesajlar
       
         public List<Payment> Payments { get; set; } // Kullanıcının yaptığı ödemeler
-        public bool IsPayment  { get; set; }
         public List<Apartment> Apartments { get; set; } // Kullanıcının sahip olduğu daireler
     }
     public class UserConfiguration : IEntityTypeConfiguration<User>
@@ -55,14 +54,6 @@ namespace SP.Entity.Models
             builder.Property(x => x.TCNo).IsRequired().HasMaxLength(11);
             builder.Property(x => x.VehiclePlateNumber).HasMaxLength(20);
 
-         
-            builder.HasMany(x => x.MessagesSending).WithOne().HasForeignKey("SenderId").OnDelete(DeleteBehavior.NoAction);
-          
-            builder.HasMany(x => x.Payments).WithOne().HasForeignKey("UserId").OnDelete(DeleteBehavior.Restrict);
-            builder.HasMany(x => x.Apartments).WithOne().HasForeignKey("UserId").OnDelete(DeleteBehavior.Restrict);
-
-  
-            builder.HasOne(x => x.Role).WithMany().HasForeignKey("RoleId").OnDelete(DeleteBehavior.Restrict);
             #endregion
 
             #region Property Configuration

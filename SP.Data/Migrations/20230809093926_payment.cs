@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SP.Data.Migrations
 {
-    public partial class m1 : Migration
+    public partial class payment : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -68,8 +68,7 @@ namespace SP.Data.Migrations
                     PasswordRetryCount = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     TCNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VehiclePlateNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsPayment = table.Column<bool>(type: "bit", nullable: false)
+                    VehiclePlateNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -116,8 +115,8 @@ namespace SP.Data.Migrations
                     SenderId = table.Column<int>(type: "int", nullable: false),
                     ReceiverId = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsRead = table.Column<bool>(type: "bit", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MessageStatus = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -151,6 +150,7 @@ namespace SP.Data.Migrations
                     InvoiceAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    PaymentStatus = table.Column<bool>(type: "bit", nullable: false),
                     Months = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

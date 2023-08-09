@@ -34,6 +34,7 @@ public class MapperConfig : Profile
 
         CreateMap<Messages,MessagesRequest>().ReverseMap();
         CreateMap<Messages,MessagesResponse>().ReverseMap();
+
     }
 
 }

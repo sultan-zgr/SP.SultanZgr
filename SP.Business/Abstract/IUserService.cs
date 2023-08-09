@@ -10,6 +10,6 @@ namespace SP.Business.Abstract;
 
 public interface IUserService : IGenericService<User, UserRequest, UserResponse>
 {
-    Task<bool> CheckUserExists(int userId); //Bu şekilde bir kullanıcımız var mı kontrol ediyoruz.
-    Task<ApiResponse<List<User>>> GetUsersWithPendingPayments();  //Faturasını ödemeyen kullanıcılar
+    Task<bool> CheckUserExists(int userId); //Bu şekilde bir kullanıcımız var mı kontrol ediyoruz
+ 
 }

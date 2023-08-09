@@ -7,6 +7,7 @@ using SP.Data;
 using SP.Data.UnitOfWork;
 using SP.Entity;
 using SP.Entity.Models;
+using SP.Schema;
 using SP.Schema.Request;
 using SP.Schema.Response;
 using System;
@@ -21,11 +22,13 @@ namespace SP.Business.Concrete
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserService _userService;
 
-        public MonthlyInvoiceService(IMapper mapper, IUnitOfWork unitOfWork) : base(mapper, unitOfWork)
+        public MonthlyInvoiceService(IMapper mapper, IUnitOfWork unitOfWork, IUserService userService) : base(mapper, unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _userService = userService;
         }
 
         public async Task<ApiResponse<MonthlyInvoiceResponse>> AddMonthlyInvoiceByMonth(MonthlyInvoiceRequest monthlyInvoiceRequest, Months month)
@@ -40,6 +43,8 @@ namespace SP.Business.Concrete
 
             return new ApiResponse<MonthlyInvoiceResponse>(response);
         }
+
+
 
         public async Task<ApiResponse<MonthlyInvoiceResponse>> UpdateMonthlyInvoiceByMonth(int invoiceId, MonthlyInvoiceRequest monthlyInvoiceRequest, Months month)
         {
@@ -58,13 +63,45 @@ namespace SP.Business.Concrete
 
             return new ApiResponse<MonthlyInvoiceResponse>(response);
         }
+        public async Task<ApiResponse<List<UserResponse>>> GetUsersWithUnpaidInvoicesAsync()
+        {
+            List<UserResponse> usersWithUnpaidInvoices = new List<UserResponse>();
+
+            List<MonthlyInvoice> allInvoices = await _unitOfWork.DynamicRepo<MonthlyInvoice>().GetAllAsync();
+
+            bool anyUnpaidInvoice = false;
+
+            foreach (var invoice in allInvoices)
+            {
+                if (!invoice.PaymentStatus)
+                {
+                    anyUnpaidInvoice = true;
+                    User user = await _unitOfWork.DynamicRepo<User>().GetByIdAsync(invoice.UserId);
+                    if (user != null)
+                    {
+                        UserResponse userResponse = _mapper.Map<UserResponse>(user);
+                        if (!usersWithUnpaidInvoices.Contains(userResponse))
+                        {
+                            usersWithUnpaidInvoices.Add(userResponse);
+                        }
+                    }
+                }
+            }
+
+            if (!anyUnpaidInvoice)
+            {
+                return new ApiResponse<List<UserResponse>>("No unpaid invoice information available");
+            }
+
+            return new ApiResponse<List<UserResponse>>(usersWithUnpaidInvoices);
+        }
+
+
+
     }
+
+
 }
-
-
-
-
-
 
 
 

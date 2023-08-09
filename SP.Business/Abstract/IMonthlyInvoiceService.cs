@@ -2,6 +2,8 @@
 using SP.Base.Enums.Months;
 using SP.Business.GenericService;
 using SP.Entity;
+using SP.Entity.Models;
+using SP.Schema;
 using SP.Schema.Request;
 using SP.Schema.Response;
 using System;
@@ -16,6 +18,7 @@ namespace SP.Business.Abstract
     {
         Task<ApiResponse<MonthlyInvoiceResponse>> AddMonthlyInvoiceByMonth(MonthlyInvoiceRequest monthlyInvoiceRequest, Months month);
         Task<ApiResponse<MonthlyInvoiceResponse>> UpdateMonthlyInvoiceByMonth(int invoiceId, MonthlyInvoiceRequest monthlyInvoiceRequest, Months month);
+        Task<ApiResponse<List<UserResponse>>> GetUsersWithUnpaidInvoicesAsync();
 
     }
 }

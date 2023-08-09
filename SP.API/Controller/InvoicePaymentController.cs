@@ -41,7 +41,7 @@ namespace SP.API.Controller
             return await response;
         }
         [HttpPost("pay")]
-        [Authorize(Roles = "admin,user")]
+       // [Authorize(Roles = "admin,user")]
         public async Task<ApiResponse<TransferReponse>> PayInvoice([FromBody] CashRequest request)
         {
             var response = await _service.PayAsync(request);

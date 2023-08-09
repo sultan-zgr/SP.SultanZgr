@@ -14,7 +14,7 @@ namespace SP.Schema.Response
         public int UserId { get; set; }
         public decimal InvoiceAmount { get; set; }
         public DateTime Date { get; set; }
-        public bool InvoiceStatus { get; set; }
+        public bool PaymentStatus { get; set; }
         public Months Months { get; set; }
 
     }

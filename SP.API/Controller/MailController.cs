@@ -20,29 +20,6 @@ namespace SP.API.Controller
             _mailService = mailService;
         }
 
-        [HttpGet("send-reminders")]
-        public async Task<IActionResult> SendPaymentReminders()
-        {
-            try
-            {
-                var response = await _userService.GetUsersWithPendingPayments();
-                if (response.Success && response.Response != null)
-                {
-                    foreach (var user in response.Response)
-                    {
-                        await _mailService.SendReminderEmail(user.Email);
-                    }
-                    return Ok("Payment reminders sent successfully!");
-                }
-                else
-                {
-                    return BadRequest("Failed to get users with pending payments.");
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "An error occurred: " + ex.Message);
-            }
-        }
+       
     }
 }

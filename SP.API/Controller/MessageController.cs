@@ -42,7 +42,12 @@ namespace SP.API.Controller
             var response = await _messageService.GetAll();
             return response;
         }
-
+        [HttpGet("{id}")]
+        public async Task<ApiResponse<MessagesResponse>> GetMessage(int id)
+        {
+            var response = await _messageService.GetMessage(id);
+            return response;
+        }
         }
 
 

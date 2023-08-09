@@ -67,10 +67,8 @@ namespace SP.API.Controller
             var response = await _service.Update(id, request);
             return response;
 
-
-
-
         }
+        
     }
 
 }
