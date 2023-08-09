@@ -525,6 +525,7 @@ Using the ConnectionFactory class, we establish a connection to the RabbitMQ ser
 We create a channel to define the queue where messages will be sent. The queue is named "Message" and is set as non-exclusive and non-auto-deleted.
 
 The message to be sent is converted to JSON format using the JsonConvert.SerializeObject() method.
+![image](https://github.com/sultan-zgr/SP.SultanZgr/assets/88083356/85323b74-6de2-4d88-9ee1-432467495148)
 
  ```c#
 public void SendMessage<T>(T message)
@@ -547,6 +548,8 @@ public void SendMessage<T>(T message)
   }
 }
  ```
+![image](https://github.com/sultan-zgr/SP.SultanZgr/assets/88083356/db6a6157-9d91-41c8-8b24-d059f2854ad7)
+
  
 Next, we create the message body and convert it into a byte array using UTF8 encoding.
 
