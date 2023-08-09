@@ -317,7 +317,7 @@ Code: 401
 Details: Unauthorized
 Error: Unauthorized. The 401 error indicates that a client attempted to access a resource without authentication credentials or with invalid authentication credentials.
 
-Now, when I log in with a registered user in the database, I should receive a 200 response, and you should have obtained a structure similar to the following,
+Now, when I log in with a registered user in the database, I should receive a 200 response, and you should have obtained a structure similar to the following, 
 ```json
 {
   "success": true,
@@ -329,7 +329,7 @@ Now, when I log in with a registered user in the database, I should receive a 20
   }
 
  ```
-We can determine the places where users or specifically "users" can access using the notation **[Authorize(Roles = "Admin")]**.
+We can determine the places where users or specifically "users" can access using the notation **[Authorize(Roles = "Admin")]**. 🔑
 After the login process, the admin can assign a user by providing a UserName and Password. The assigned user can then log in using the provided credentials.;
 ```c#
  [HttpPost]
@@ -527,7 +527,7 @@ We create a channel to define the queue where messages will be sent. The queue i
 The message to be sent is converted to JSON format using the JsonConvert.SerializeObject() method.
 
 
-👉🏻 ![image](https://github.com/sultan-zgr/SP.SultanZgr/assets/88083356/53ea0f25-4356-4255-8dba-983ee74f5921)
+ ![image](https://github.com/sultan-zgr/SP.SultanZgr/assets/88083356/53ea0f25-4356-4255-8dba-983ee74f5921)
 
 
  ```c#
@@ -551,7 +551,7 @@ public void SendMessage<T>(T message)
   }
 }
  ```
-👉🏻 ![image](https://github.com/sultan-zgr/SP.SultanZgr/assets/88083356/db6a6157-9d91-41c8-8b24-d059f2854ad7)
+![image](https://github.com/sultan-zgr/SP.SultanZgr/assets/88083356/142d3cc2-79a8-4e41-b1f7-b1b2bc6069ed)
 
  
 Next, we create the message body and convert it into a byte array using UTF8 encoding.
@@ -576,8 +576,8 @@ In summary, this code defines a message sending method that sends a message of t
  ```
  And in my message controller, I handle the necessary transmissions and save my messages to the database. 🎈
 
-## MailJob 📧
-We have a system that sends emails to users who have not paid their invoices every 24 hours. 
+## MailJob 📧 ⏰
+We have a system that sends emails to users who have not paid their invoices every 24 hours. ⏰
 
 This code snippet defines a MailService class that sends reminder emails at regular intervals using a timer and SMTP settings.
 ```c#
@@ -619,7 +619,7 @@ public async Task SendReminderEmail(string userEmail)
                 throw new Exception("Error while sending email: " + ex.Message);
             }
  ```
-And then, we send these emails from the MailController using the **[HttpGet("send-reminders")]** endpoint.
+And then, we send these emails from the MailController using the **[HttpGet("send-reminders")]** endpoint. 
 
 
-That's it!! I hope it's clear enough. See you soon! 🧡 👩‍🦰
+That's it!! 🎉 I hope it's clear enough. See you soon! 🧡 👩‍🦰
