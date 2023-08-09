@@ -28,6 +28,7 @@ namespace SP.API
             services.AddLogging();
 
             #region Mail Servis
+            services.AddScoped<IMonthlyInvoiceService, MonthlyInvoiceService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IMailService, MailService>();
             services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));

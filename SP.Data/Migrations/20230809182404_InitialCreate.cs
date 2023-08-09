@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SP.Data.Migrations
 {
-    public partial class payment : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -177,7 +177,7 @@ namespace SP.Data.Migrations
                     Balance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsSuccessful = table.Column<bool>(type: "bit", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NewBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    NewBalance = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false)
                 },
                 constraints: table =>
                 {

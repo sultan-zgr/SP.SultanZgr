@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SP.Base.BaseResponse;
 using SP.Business.Abstract;
 using SP.Business.MailService;
+using SP.Schema;
 using System.Data;
 
 namespace SP.API.Controller
@@ -11,15 +13,32 @@ namespace SP.API.Controller
     [ApiController]
     public class MailController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IMonthlyInvoiceService _invoiceService;
         private readonly IMailService _mailService;
 
-        public MailController(IUserService userService, IMailService mailService)
+        public MailController(IMailService mailService, IMonthlyInvoiceService invoiceService)
         {
-            _userService = userService;
             _mailService = mailService;
+            _invoiceService = invoiceService;
         }
 
-       
+        [HttpGet("send-reminders")]
+        public async Task<ApiResponse<UserResponse>> SendReminders()
+        {
+                var unpaidUsersResponse = await _invoiceService.GetUsersWithUnpaidInvoicesAsync();
+
+                if (unpaidUsersResponse.Success)
+                {
+                    foreach (var userResponse in unpaidUsersResponse.Response)
+                    {
+                        await _mailService.SendReminderEmail(userResponse.Email);
+                    return new ApiResponse<UserResponse>("Your mail has been sent.");
+                }
+
+                }
+
+            return new ApiResponse<UserResponse>("No unpaid invoices found.");
+
+        }
     }
-}
+    }

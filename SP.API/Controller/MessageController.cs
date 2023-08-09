@@ -27,7 +27,7 @@ namespace SP.API.Controller
 
         }
         [HttpPost]
-        //[Authorize(Roles = "user")]
+        [Authorize(Roles = "user")]
         public async Task<ApiResponse<MessagesResponse>> SendMessage([FromBody] MessagesRequest request)
         {
             _rabbitMqProducer.SendMessage(request);
@@ -36,7 +36,7 @@ namespace SP.API.Controller
             return response;
         }
         [HttpGet]
-       // [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         public async Task<ApiResponse<List<MessagesResponse>>> GetAllMessages()
         {
             var response = await _messageService.GetAll();

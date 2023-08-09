@@ -92,7 +92,16 @@ public class SPDbContext : DbContext
             .HasForeignKey(m => m.SenderId)
             .OnDelete(DeleteBehavior.Restrict);
         #endregion
-        
+
+        #region Payment
+        modelBuilder.Entity<Payment>()
+    .Property(p => p.NewBalance)
+    .HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Payment>()
+    .Property(p => p.NewBalance)
+    .HasPrecision(18, 2); 
+
+        #endregion
 
 
         base.OnModelCreating(modelBuilder);

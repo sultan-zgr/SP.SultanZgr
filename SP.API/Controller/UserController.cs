@@ -24,11 +24,14 @@ namespace SP.API.Controller
         }
 
      
-        [HttpPost]
+        [HttpPost("UserCreate")]
         public async Task<ApiResponse> UserCreate([FromBody] UserRequest request)
         {
             string hashedPassword = CalculateMD5Hash(request.Password);
             request.Password = hashedPassword;
+
+            request.Role = "user";
+            request.Status = true;
 
             var response = await _service.Insert(request); 
 

@@ -63,7 +63,7 @@ namespace SP.Business.Concrete
             if (request == null)
                 return new ApiResponse<TransferReponse>("Invalid Request");
 
-            if (request.CreditCardNumber == null || request.CreditCardNumber.Length != 19)
+            if (request.CreditCardNumber == null || request.CreditCardNumber.Length != 16)
                 return new ApiResponse<TransferReponse>("Invalid Credit Card Number");
 
             // Validate CVV

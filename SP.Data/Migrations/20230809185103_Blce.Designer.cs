@@ -12,8 +12,8 @@ using SP.Data;
 namespace SP.Data.Migrations
 {
     [DbContext(typeof(SPDbContext))]
-    [Migration("20230809093926_payment")]
-    partial class payment
+    [Migration("20230809185103_Blce")]
+    partial class Blce
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,7 @@ namespace SP.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("NewBalance")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("PaymentDate")
