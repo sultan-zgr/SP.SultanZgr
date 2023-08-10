@@ -11,7 +11,7 @@ using System.Text;
 
 namespace SP.API.Controller
 {
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -23,7 +23,7 @@ namespace SP.API.Controller
             _service = service;
         }
 
-     
+
         [HttpPost("UserCreate")]
         public async Task<ApiResponse> UserCreate([FromBody] UserRequest request)
         {
@@ -33,7 +33,7 @@ namespace SP.API.Controller
             request.Role = "user";
             request.Status = true;
 
-            var response = await _service.Insert(request); 
+            var response = await _service.Insert(request);
 
             return response;
         }
@@ -60,18 +60,25 @@ namespace SP.API.Controller
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ApiResponse> UpdateUser(int id, [FromBody] UserRequest request)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ApiResponse>> UpdateUser(int id, [FromBody] UserRequest request)
         {
+            // Hash the new password if provided
+            if (!string.IsNullOrEmpty(request.Password))
+            {
+                string hashedPassword = CalculateMD5Hash(request.Password);
+                request.Password = hashedPassword;
+            }
 
-            string hashedPassword = CalculateMD5Hash(request.Password);
-            request.Password = hashedPassword;
+            var existingUser = await _service.GetById(id);
+            if (existingUser == null)
+            {
+                return NotFound("User not found.");
+            }
 
             var response = await _service.Update(id, request);
             return response;
-
         }
-        
-    }
 
+    }
 }
